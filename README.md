@@ -2,6 +2,21 @@
 
 A modern social media platform built with Next.js.
 
+## 📋 Prerequisites
+
+Before you begin, make sure you have the following installed on your system:
+
+- **Node.js** (version 18.0 or higher)
+- **npm** (version 9.0 or higher) or **yarn** or **pnpm**
+- **Git**
+
+You can check if you have these installed by running:
+```bash
+node --version
+npm --version
+git --version
+```
+
 ## 🚀 Quick Start
 
 1. **Clone the project**
