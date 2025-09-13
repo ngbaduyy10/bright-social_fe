@@ -1,15 +1,21 @@
 # Bright Social - Frontend
 
-A modern social media platform built with Next.js, React, and TypeScript.
+A modern social media platform built with Next.js.
 
 ## 🚀 Quick Start
 
-1. **Install dependencies**
+1. **Clone the project**
+   ```bash
+   git clone https://github.com/ngbaduyy10/bright-social_fe.git
+   cd bright-social_fe
+   ```
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. **Set up environment**
+3. **Set up environment**
    ```bash
    cp .env.example .env
    ```
@@ -18,12 +24,12 @@ A modern social media platform built with Next.js, React, and TypeScript.
    BE_URL=your_backend_api_url
    ```
 
-3. **Run development server**
+4. **Run development server**
    ```bash
    npm run dev
    ```
 
-4. **Open browser**
+5. **Open browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 📁 Project Structure
