@@ -13,7 +13,7 @@ export default function RegisterPage() {
             <p className="text-md mb-4">Go back to the home page to explore more.</p>
             <CommonButton 
               href="/"
-              className="border border-white"
+              className="border border-white hover:bg-white hover:text-primary"
             >
               Go back to Home
             </CommonButton>

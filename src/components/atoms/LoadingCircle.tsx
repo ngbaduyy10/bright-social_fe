@@ -1,18 +1,19 @@
 import { LoaderCircle } from "lucide-react";
+import { ReactNode } from "react";
 
 interface LoadingCircleProps {
   loading: boolean;
-  text: string;
+  children: ReactNode;
 }
 
-export default function LoadingCircle({ loading, text } : LoadingCircleProps) {
+export default function LoadingCircle({ loading, children } : LoadingCircleProps) {
   return (
     <>
       {loading ? (
         <div className="animate-spin flex-center">
           <LoaderCircle/>
         </div>
-      ) : text}
+      ) : children}
     </>
   )
 }

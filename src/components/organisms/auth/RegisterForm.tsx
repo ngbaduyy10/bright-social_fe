@@ -75,7 +75,7 @@ export default function RegisterForm() {
             disabled={loading} 
             className="w-full mt-2"
           >
-            <LoadingCircle loading={loading} text={"Sign Up"} />
+            <LoadingCircle loading={loading}>Sign Up</LoadingCircle>
           </CommonButton>
         </form>
       </Form>

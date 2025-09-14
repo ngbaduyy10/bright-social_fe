@@ -65,7 +65,7 @@ export default function LoginForm() {
             disabled={loading} 
             className="w-full mt-2"
           >
-            <LoadingCircle loading={loading} text={"Sign In"} />
+            <LoadingCircle loading={loading}>Sign In</LoadingCircle>
           </CommonButton>
         </form>
       </Form>

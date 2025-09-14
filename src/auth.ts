@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import Google from "next-auth/providers/google";
+import { fetchApi } from "./utils/api";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -11,27 +12,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
-        const res = await fetch(`${process.env.BE_URL}/auth/login`, {
+        const response = await fetchApi("/auth/login", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
+          body: {
             email: credentials?.email,
             password: credentials?.password,
-          }),
-        })
+          },
+        });
 
-        let access_token = null;
-        let user = null;
-
-        if (res.ok) {
-          const json = await res.json();
-          access_token = json.data.access_token;
-          user = json.data.user;
-        } else {
+        if (!response.success) {
           throw new Error("Login failed");
         }
+
+        const { access_token, user } = response.data;
 
         if (!user) {
           throw new Error("Invalid credentials.")
@@ -50,9 +43,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async signIn({ user, account, profile }) {
       if (account?.provider === "google") {
-        //call api to create user if not exists based on profile
-        user.id = "123";
-        user.access_token = "12345";
+        const response = await fetchApi("/auth/google-login", {
+          method: "POST",
+          body: { 
+            email: profile?.email,
+            username: profile?.name,
+           },
+        });
+        
+        if (!response.success) {
+          throw new Error("Google login failed");
+        }
+
+        const { user: userData, access_token } = response.data;
+        user.id = userData.id;
+        user.email = userData.email;
+        user.name = userData.username;
+        user.image = userData.image;
+        user.access_token = access_token;
       }
       return true;
     },

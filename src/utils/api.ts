@@ -13,7 +13,7 @@ interface FetchAPIOptions {
   cache?: RequestCache;
 }
 
-export async function apiFetch(url: string, options?: FetchAPIOptions) {
+export async function fetchApi(url: string, options?: FetchAPIOptions) {
   const { method, authToken, body, next, cache } = options || {};
 
   const headers: RequestInit & { next?: NextFetchRequestConfig } = {
