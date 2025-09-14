@@ -1,7 +1,7 @@
 import CommonButton from "@/components/atoms/CommonButton";
 import RegisterForm from "@/components/organisms/auth/RegisterForm";
 
-export default function Register() {
+export default function RegisterPage() {
   return (
     <div className="h-screen flex-center bg-background">
       <div
@@ -11,7 +11,12 @@ export default function Register() {
             <h1 className="text-white mb-4 font-bold text-3xl">Welcome to Bright!</h1>
             <p className="text-md text-white">To keep connected with us please sign up with your personal info.</p>
             <p className="text-md text-white mb-4">Already have an account? Please sign in.</p>
-            <CommonButton href="/login">Sign In</CommonButton>
+            <CommonButton 
+              href="/login"
+              className="border border-white bg-primary text-white hover:bg-white hover:text-primary"
+            >
+              Sign In
+            </CommonButton>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center p-8 rounded-[30px]">

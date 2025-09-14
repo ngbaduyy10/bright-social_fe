@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
@@ -9,6 +8,8 @@ import { motion } from "framer-motion";
 interface CommonButtonProps {
   children: ReactNode;
   href?: string;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
   onClick?: () => void;
   className?: string;
 }
@@ -16,6 +17,8 @@ interface CommonButtonProps {
 export default function CommonButton({
   children,
   href,
+  type = "button",
+  disabled = false,
   onClick,
   className,
 }: CommonButtonProps) {
@@ -30,20 +33,19 @@ export default function CommonButton({
   };
 
   return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+    <motion.button
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 1 }}
+      transition={{ type: "spring", stiffness: 400, damping: 20 }}
+      className={cn(
+        "cursor-pointer w-fit transition-colors duration-300 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2",
+        className
+      )}
+      onClick={handleClick}
+      type={type}
+      disabled={disabled}
     >
-      <Button
-        className={cn(
-          "cursor-pointer border border-white hover:bg-white hover:text-primary text-white w-fit transition-colors duration-200",
-          className
-        )}
-        onClick={handleClick}
-      >
-        {children}
-      </Button>
-    </motion.div>
+      {children}
+    </motion.button>
   );
 }

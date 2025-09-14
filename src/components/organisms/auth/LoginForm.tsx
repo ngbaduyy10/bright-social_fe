@@ -1,7 +1,6 @@
 "use client";
 
 import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginFormSchema } from "@/utils/zod";
@@ -12,6 +11,9 @@ import LoadingCircle from "@/components/atoms/LoadingCircle";
 import {signIn} from "next-auth/react";
 import {useRouter} from "next/navigation";
 import { toast } from "sonner";
+import CommonButton from "@/components/atoms/CommonButton";
+import GoogleSignInButton from "@/components/atoms/GoogleSignInButton";
+import Link from "next/link";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -40,10 +42,6 @@ export default function LoginForm() {
     setLoading(false);
   };
 
-  const handleGoogleSignIn = async () => {
-    await signIn("google", { redirectTo: "/dashboard" });
-  }
-
   return (
     <>
       <Form {...form}>
@@ -62,12 +60,27 @@ export default function LoginForm() {
             type={"password"}
             placeholder={"Password"}
           />
-          <Button type="submit" disabled={loading} className="w-full cursor-pointer mt-2">
+          <CommonButton 
+            type="submit" 
+            disabled={loading} 
+            className="w-full cursor-pointer mt-2 bg-primary text-white"
+          >
             <LoadingCircle loading={loading} text={"Sign In"} />
-          </Button>
+          </CommonButton>
         </form>
       </Form>
-      <Button onClick={handleGoogleSignIn}>Sign in with Google</Button>
+      <p className="text-sm text-muted-foreground mt-2 md:hidden">
+        Don&apos;t have an account?{" "}
+        <Link href="/register" className="text-primary hover:underline cursor-pointer">
+          Sign Up
+        </Link>
+      </p>
+      <div className="flex items-center my-1 w-full">
+        <div className="flex-1 border-t border-gray-300"></div>
+        <span className="px-4 text-muted-foreground">Or</span>
+        <div className="flex-1 border-t border-gray-300"></div>
+      </div>
+      <GoogleSignInButton text="Sign in with Google" />
     </>
   )
 }
