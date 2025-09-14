@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Sen } from "next/font/google";
 import "@/styles/globals.css";
-import NextAuthProvider from "@/components/templates/NextAuthProvider";
 import { Toaster } from "sonner";
 
 const sen = Sen({
@@ -22,9 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sen.variable} antialiased`}>
-        <NextAuthProvider>
-          {children}
-        </NextAuthProvider>
+        {children}
         <Toaster position="top-right" closeButton={true} />
       </body>
     </html>

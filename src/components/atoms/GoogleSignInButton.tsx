@@ -9,7 +9,7 @@ interface GoogleSignInButtonProps {
 
 export default function GoogleSignInButton({ text }: GoogleSignInButtonProps) {
   const handleGoogleSignIn = async () => {
-    await signIn("google", { redirectTo: "/dashboard" });
+    await signIn("google", { redirectTo: "/news-feed" });
   }
 
   return (

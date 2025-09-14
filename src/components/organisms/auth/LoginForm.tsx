@@ -34,7 +34,7 @@ export default function LoginForm() {
       redirect: false,
     });
     if (!response.error) {
-      router.push("/dashboard");
+      router.push("/news-feed");
       toast.success("Login successful!");
     } else {
       toast.error("Invalid email or password.");

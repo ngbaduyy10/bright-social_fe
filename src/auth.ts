@@ -31,7 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: "123",
           email: "test@test.com",
           username: "test",
-          phone: "1234567890",
+          image: "https://via.placeholder.com/150",
         }
 
         const access_token = "12345";
@@ -44,7 +44,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: user.id,
           email: user.email,
           name: user.username,
-          phone: user.phone,
+          image: user.image,
           access_token: access_token,
         };
       },
