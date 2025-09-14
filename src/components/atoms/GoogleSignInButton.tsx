@@ -13,8 +13,8 @@ export default function GoogleSignInButton({ text }: GoogleSignInButtonProps) {
   }
 
   return (
-    <CommonButton onClick={handleGoogleSignIn}>
-      <div className="flex items-center gap-1 border border-gray-300 rounded-md py-2 px-4">
+    <CommonButton onClick={handleGoogleSignIn} className="border border-gray-300 bg-white text-black">
+      <div className="flex items-center gap-1">
         <Image src={GoogleIcon} alt="Google" width={20} height={20} className="bg-white" />
         {text}
       </div>

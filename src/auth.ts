@@ -11,30 +11,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
-        // const res = await fetch(`${process.env.BE_URL}/api/auth/login`, {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     email: credentials?.email,
-        //     password: credentials?.password,
-        //   }),
-        // })
-        // const json = await res.json();
-        // if (json.statusCode !== 200 && json.statusCode !== 201) {
-        //   throw new Error(json.message || "Login failed");
-        // }
+        const res = await fetch(`${process.env.BE_URL}/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: credentials?.email,
+            password: credentials?.password,
+          }),
+        })
 
-        // const { access_token, user } = json.data;
-        const user = {
-          id: "123",
-          email: "test@test.com",
-          username: "test",
-          image: "https://via.placeholder.com/150",
+        let access_token = null;
+        let user = null;
+
+        if (res.ok) {
+          const json = await res.json();
+          access_token = json.data.access_token;
+          user = json.data.user;
+        } else {
+          throw new Error("Login failed");
         }
-
-        const access_token = "12345";
 
         if (!user) {
           throw new Error("Invalid credentials.")

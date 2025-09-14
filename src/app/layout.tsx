@@ -11,6 +11,11 @@ const sen = Sen({
 export const metadata: Metadata = {
   title: "Bright",
   description: "Social Media Platform",
+  icons: {
+    icon: "/src/static/icons/favicon.svg",
+    shortcut: "/src/static/icons/favicon.svg",
+    apple: "/src/static/icons/favicon.svg",
+  },
 };
 
 export default function RootLayout({

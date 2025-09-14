@@ -63,15 +63,15 @@ export default function LoginForm() {
           <CommonButton 
             type="submit" 
             disabled={loading} 
-            className="w-full cursor-pointer mt-2 bg-primary text-white"
+            className="w-full mt-2"
           >
             <LoadingCircle loading={loading} text={"Sign In"} />
           </CommonButton>
         </form>
       </Form>
-      <p className="text-sm text-muted-foreground mt-2 md:hidden">
+      <p className="text-sm text-muted-foreground mt-2">
         Don&apos;t have an account?{" "}
-        <Link href="/register" className="text-primary hover:underline cursor-pointer">
+        <Link href="/register" className="text-black hover:underline cursor-pointer">
           Sign Up
         </Link>
       </p>

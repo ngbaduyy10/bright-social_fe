@@ -35,9 +35,9 @@ export async function apiFetch(url: string, options?: FetchAPIOptions) {
       contentType.includes("application/json") &&
       response.ok
     ) {
-      return await response.json();
+      return { success: true, ...await response.json() };
     } else {
-      return { status: response.status, statusText: response.statusText };
+      return { success: false, statusCode: response.status, statusText: response.statusText };
     }
   } catch (error) {
     console.error(`Error ${method} data:`, error);
