@@ -8,6 +8,8 @@ export const loginFormSchema = z.object({
     .min(6, "Password must be at least 6 characters long"),
 });
 
+export type LoginFormData = z.infer<typeof loginFormSchema>;
+
 export const registerFormSchema = z
   .object({
     username: z
@@ -16,10 +18,6 @@ export const registerFormSchema = z
       .min(4, "Username must be at least 4 characters long")
       .max(20, "Username must be at most 20 characters long"),
     email: z.email("Invalid email format"),
-    phone: z
-      .string()
-      .nonempty("Phone number is required")
-      .regex(/^\d+$/, "Phone number must contain only digits"),
     password: z
       .string()
       .nonempty("Password is required")
@@ -33,3 +31,5 @@ export const registerFormSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
+
+export type RegisterFormData = z.infer<typeof registerFormSchema>;

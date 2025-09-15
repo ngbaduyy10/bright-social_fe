@@ -1,34 +1,60 @@
 "use client";
 
 import {Form} from "@/components/ui/form";
-import {Button} from "@/components/ui/button";
 import LoadingCircle from "@/components/atoms/LoadingCircle";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {registerFormSchema} from "@/utils/zod";
-import {z} from "zod";
+import {registerFormSchema, RegisterFormData} from "@/utils/zod";
 import CustomFormControl from "@/components/molecules/CustomFormControl";
 import CommonButton from "@/components/atoms/CommonButton";
 import GoogleSignInButton from "@/components/atoms/GoogleSignInButton";
 import Link from "next/link";
+import {registerUser} from "@/lib/actions/auth.action";
+import {toast} from "sonner";
+import {signIn} from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const form = useForm({
+
+  const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
       username: "",
       email: "",
-      phone: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof registerFormSchema>) => {
+  const onSubmit = async (data: RegisterFormData) => {
     setLoading(true);
-    console.log("Form submitted with data:", data);
+    try {
+      const result = await registerUser(data);
+      if (result.success) {
+        const response = await signIn("credentials", {
+          email: data.email,
+          password: data.password,
+          redirect: false,
+        });
+        if (!response.error) {
+          form.reset();
+          router.push("/news-feed");
+          toast.success("Registration successful!");
+        } else {
+          toast.error("Registration failed. Please try again.");
+        }
+      } else {
+        toast.error(result.message || "Registration failed. Please try again.");
+      }
+    } catch (err) {
+      console.error("Registration error:", err);
+      toast.error("An unexpected error occurred. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,13 +74,6 @@ export default function RegisterForm() {
             label={"Email"}
             type={"email"}
             placeholder={"Email"}
-          />
-          <CustomFormControl
-            control={form.control}
-            name={"phone"}
-            label={"Phone"}
-            type={"tel"}
-            placeholder={"Phone"}
           />
           <CustomFormControl
             control={form.control}

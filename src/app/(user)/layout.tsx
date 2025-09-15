@@ -4,10 +4,12 @@ import Sidebar from "@/components/organisms/layout/Sidebar";
 export default function UserLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen w-full">
-      <Sidebar />
-      <div className="flex flex-1 flex-col lg:pl-64 max-w-screen">
-        <main className="flex flex-col p-4 md:p-6">{children}</main>
+      <div className="w-64 h-screen sticky top-0 max-md:hidden">
+        <Sidebar />
       </div>
+      <main className="flex-1 flex flex-col max-w-screen p-6 md:p-8">
+        {children}
+      </main>
     </div>
   );
 }

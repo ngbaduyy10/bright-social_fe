@@ -1,12 +1,12 @@
 interface FeatureCardProps {
-  icon: React.ReactNode;
+  icon: React.ElementType;
   variant?: string;
   title: string;
   desc: string;
 }
 
 export default function FeatureCard({ 
-  icon, 
+  icon: Icon, 
   variant = 'bg-green-50', 
   title, 
   desc 
@@ -16,7 +16,7 @@ export default function FeatureCard({
     <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
       <div className="flex items-center mb-4">
         <div className={`w-10 h-10 ${variant} rounded-lg flex-center`}>
-          {icon}
+          <Icon className="w-5 h-5" />
         </div>
       </div>
       

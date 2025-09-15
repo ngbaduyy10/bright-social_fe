@@ -1,0 +1,19 @@
+"use server";
+
+import { fetchApi } from "@/utils/api";
+import { registerFormSchema, RegisterFormData } from "@/utils/zod";
+
+export async function registerUser(formData: RegisterFormData) {
+    const validatedData = registerFormSchema.parse(formData);
+    
+    const response = await fetchApi("/auth/register", {
+      method: "POST",
+      body: {
+        username: validatedData.username,
+        email: validatedData.email,
+        password: validatedData.password,
+      },
+    });
+
+    return response;
+}

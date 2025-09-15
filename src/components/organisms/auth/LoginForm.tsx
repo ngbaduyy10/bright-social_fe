@@ -3,8 +3,7 @@
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginFormSchema } from "@/utils/zod";
-import { z } from "zod";
+import { loginFormSchema, LoginFormData } from "@/utils/zod";
 import { useState } from "react";
 import CustomFormControl from "@/components/molecules/CustomFormControl";
 import LoadingCircle from "@/components/atoms/LoadingCircle";
@@ -18,7 +17,7 @@ import Link from "next/link";
 export default function LoginForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const form = useForm({
+  const form = useForm<LoginFormData>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
       email: "",
@@ -26,20 +25,26 @@ export default function LoginForm() {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
+  const onSubmit = async (data: LoginFormData) => {
     setLoading(true);
-    const response = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
-    if (!response.error) {
-      router.push("/news-feed");
-      toast.success("Login successful!");
-    } else {
-      toast.error("Invalid email or password.");
+    try {
+      const response = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+      if (!response.error) {
+        router.push("/news-feed");
+        toast.success("Login successful!");
+      } else {
+        toast.error("Invalid email or password.");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      toast.error("An unexpected error occurred. Please try again later.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
