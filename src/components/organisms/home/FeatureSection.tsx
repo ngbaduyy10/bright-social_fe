@@ -1,6 +1,5 @@
 import HomeTitle from "@/components/atoms/HomeTitle";
 import FeatureCard from "@/components/molecules/FeatureCard";
-import { Calendar, File, ChartPie } from "lucide-react";
 import { homeFeatures } from "@/utils/constant";
 
 export default function FeatureSection() {

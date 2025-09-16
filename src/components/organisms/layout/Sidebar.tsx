@@ -1,11 +1,11 @@
 import { Plus } from "lucide-react";
-import LightningIcon from "@/components/atoms/LightningIcon";
 import CommonButton from "@/components/atoms/CommonButton";
 import { auth } from "@/auth";
 import Image from "next/image";
 import NavItems from "./NavItems";
 import DefaultAvatar from "@/static/icons/default_avatar.png";
 import SignOutButton from "@/components/atoms/SignOutButton";
+import Logo from "@/components/atoms/Logo";
 
 export default async function Sidebar() {
   const session = await auth();
@@ -14,10 +14,7 @@ export default async function Sidebar() {
   return (
     <div className="h-full bg-white border-r border-gray-200 flex flex-col">
       <div className="p-6 border-b border-gray-200">
-        <div className="flex items-center gap-2 text-primary">
-          <LightningIcon size={"xl"} />
-          <span className="text-3xl font-extrabold">Bright</span>
-        </div>
+        <Logo />
       </div>
 
       <div className="flex-1 px-4 py-6">

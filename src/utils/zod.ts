@@ -15,8 +15,9 @@ export const registerFormSchema = z
     username: z
       .string()
       .nonempty("Username is required")
-      .min(4, "Username must be at least 4 characters long")
-      .max(20, "Username must be at most 20 characters long"),
+      .min(2, "Username must be at least 2 characters long")
+      .max(20, "Username must be at most 20 characters long")
+      .regex(/^[a-zA-Z]+$/, "Username can only contain letters"),
     email: z.email("Invalid email format"),
     password: z
       .string()

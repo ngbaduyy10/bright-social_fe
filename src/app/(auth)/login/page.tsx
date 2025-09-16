@@ -1,30 +1,13 @@
-import CommonButton from "@/components/atoms/CommonButton";
 import LoginForm from "@/components/organisms/auth/LoginForm";
+import AuthLayout from "@/components/organisms/auth/AuthLayout";
 
 export default function LoginPage() {
   return (
-    <div className="h-screen flex-center bg-background">
-      <div className="flex grid grid-cols-1 md:grid-cols-2 rounded-[30px] m-4 shadow-xl w-full md:max-w-[900px] bg-white">
-        <div className="hidden md:block bg-primary p-8 rounded-l-[30px] rounded-r-[100px]">
-          <div className="h-full flex flex-col justify-center text-white">
-            <h1 className="mb-4 font-bold text-3xl">Welcome to Bright!</h1>
-            <p className="text-md">To keep connected with us please sign in with your personal info.</p>
-            <p className="text-md mb-4">Go back to the home page to explore more.</p>
-            <CommonButton 
-              href="/"
-              className="border border-white hover:bg-white hover:text-primary"
-            >
-              Go back to Home
-            </CommonButton>
-          </div>
-        </div>
-        <div className="flex flex-col items-center justify-center p-8 rounded-[30px]">
-          <h1 className="font-bold text-3xl">Sign In</h1>
-          <p className="text-md text-muted-foreground mb-4">Please sign in with your personal info.</p>
-          <LoginForm />
-          <p className="text-sm text-muted-foreground mt-2 cursor-pointer hover:text-primary">Forgot password?</p>
-        </div>
-      </div>
-    </div>
+    <AuthLayout type="login">
+      <h1 className="font-bold text-3xl">Sign In</h1>
+      <p className="text-md text-muted-foreground mb-4">Please sign in with your personal info.</p>
+      <LoginForm />
+      <p className="text-sm text-muted-foreground mt-2 cursor-pointer hover:text-primary">Forgot password?</p>
+    </AuthLayout>
   )
 }
