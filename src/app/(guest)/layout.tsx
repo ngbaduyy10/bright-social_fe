@@ -1,9 +1,9 @@
-import Header from "@/components/organisms/home/Header";
+import HomeHeader from "@/components/organisms/home/HomeHeader";
 
 export default function GuestLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Header />
+      <HomeHeader />
       {children}
     </>
   )

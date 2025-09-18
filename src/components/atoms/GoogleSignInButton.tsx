@@ -16,7 +16,7 @@ export default function GoogleSignInButton({ text }: GoogleSignInButtonProps) {
 
   const handleGoogleSignIn = async () => {
     setLoading(true);
-    await signIn("google", { redirectTo: "/news-feed" });
+    await signIn("google", { redirectTo: "/home" });
     setLoading(false);
   }
 

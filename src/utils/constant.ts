@@ -2,11 +2,10 @@ import {
   Home, 
   MessageCircle, 
   Users, 
-  Search, 
-  User, 
   Calendar,
   File,
   ChartPie,
+  Bookmark,
 } from "lucide-react";
 
 
@@ -32,9 +31,14 @@ export const homeFeatures = [
 ];
 
 export const navigationItems = [
-  { id: "news-feed", href: "/news-feed", label: "News Feed", icon: Home },
+  { id: "home", href: "/home", label: "Home", icon: Home },
   { id: "messages", href: "/messages", label: "Messages", icon: MessageCircle },
   { id: "connection", href: "/connection", label: "Connection", icon: Users },
-  { id: "search", href: "/search", label: "Search", icon: Search },
-  { id: "profile", href: "/profile", label: "Profile", icon: User },
+  { id: "saved", href: "/saved", label: "Saved", icon: Bookmark },
+];
+
+export const homeNavItems = [
+  { id: "home", href: "/", label: "Home" },
+  { id: "feature", href: "/feature", label: "Feature" },
+  { id: "contact", href: "/contact", label: "Contact" },
 ];

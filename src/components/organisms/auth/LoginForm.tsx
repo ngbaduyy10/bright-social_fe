@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import CommonButton from "@/components/atoms/CommonButton";
 import GoogleSignInButton from "@/components/atoms/GoogleSignInButton";
 import Link from "next/link";
+import { Mail, Lock } from "lucide-react";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -34,7 +35,7 @@ export default function LoginForm() {
         redirect: false,
       });
       if (!response.error) {
-        router.push("/news-feed");
+        router.push("/home");
         toast.success("Login successful!");
       } else {
         toast.error("Invalid email or password.");
@@ -56,14 +57,17 @@ export default function LoginForm() {
             name={"email"}
             label={"Email"}
             type={"text"}
-            placeholder={"Email"}
+            placeholder={"e.g. john.doe@example.com"}
+            icon={Mail}
+            classNameInput="h-11"
           />
           <CustomFormControl
             control={form.control}
             name={"password"}
             label={"Password"}
             type={"password"}
-            placeholder={"Password"}
+            icon={Lock}
+            classNameInput="h-11"
           />
           <CommonButton 
             type="submit" 

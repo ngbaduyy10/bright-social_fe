@@ -14,6 +14,7 @@ import {registerUser} from "@/lib/actions/auth.action";
 import {toast} from "sonner";
 import {signIn} from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Mail, Lock, User } from "lucide-react";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -41,7 +42,7 @@ export default function RegisterForm() {
         });
         if (!response.error) {
           form.reset();
-          router.push("/news-feed");
+          router.push("/home");
           toast.success("Registration successful!");
         } else {
           toast.error("Registration failed. Please try again.");
@@ -66,28 +67,34 @@ export default function RegisterForm() {
             name={"username"}
             label={"Username"}
             type={"text"}
-            placeholder={"Username"}
+            placeholder={"e.g. John Doe"}
+            icon={User}
+            classNameInput="h-11"
           />
           <CustomFormControl
             control={form.control}
             name={"email"}
             label={"Email"}
             type={"email"}
-            placeholder={"Email"}
+            placeholder={"e.g. john.doe@example.com"}
+            icon={Mail}
+            classNameInput="h-11"
           />
           <CustomFormControl
             control={form.control}
             name={"password"}
             label={"Password"}
             type={"password"}
-            placeholder={"Password"}
+            icon={Lock}
+            classNameInput="h-11"
           />
           <CustomFormControl
             control={form.control}
             name={"confirmPassword"}
             label={"Confirm Password"}
             type={"password"}
-            placeholder={"Confirm Password"}
+            icon={Lock}
+            classNameInput="h-11"
           />
           <CommonButton
             type="submit" 
