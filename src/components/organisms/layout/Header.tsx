@@ -1,7 +1,7 @@
 import Logo from "@/components/atoms/Logo";
 import { auth } from "@/auth";
 import Image from "next/image";
-import DefaultAvatar from "@/static/icons/default_avatar.jpg";
+import DefaultAvatar from "@/static/icons/default_avatar.png";
 import { Bell, MessageCircle } from "lucide-react";
 import CommonButton from "@/components/atoms/CommonButton";
 import SearchInput from "@/components/molecules/SearchInput";

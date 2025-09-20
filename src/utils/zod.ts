@@ -12,12 +12,18 @@ export type LoginFormData = z.infer<typeof loginFormSchema>;
 
 export const registerFormSchema = z
   .object({
-    username: z
+    firstName: z
       .string()
-      .nonempty("Username is required")
-      .min(2, "Username must be at least 2 characters long")
-      .max(20, "Username must be at most 20 characters long")
-      .regex(/^[a-zA-Z]+$/, "Username can only contain letters"),
+      .nonempty("First Name is required")
+      .min(2, "First Name must be at least 2 characters long")
+      .max(20, "First Name must be at most 20 characters long")
+      .regex(/^[a-zA-Z]+$/, "First Name can only contain letters"),
+    lastName: z
+      .string()
+      .nonempty("Last Name is required")
+      .min(2, "Last Name must be at least 2 characters long")
+      .max(20, "Last Name must be at most 20 characters long")
+      .regex(/^[a-zA-Z]+$/, "Last Name can only contain letters"),
     email: z.email("Invalid email format"),
     password: z
       .string()

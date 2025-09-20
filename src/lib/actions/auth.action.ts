@@ -9,7 +9,8 @@ export async function registerUser(formData: RegisterFormData) {
     const response = await fetchApi("/auth/register", {
       method: "POST",
       body: {
-        username: validatedData.username,
+        first_name: validatedData.firstName,
+        last_name: validatedData.lastName,
         email: validatedData.email,
         password: validatedData.password,
       },

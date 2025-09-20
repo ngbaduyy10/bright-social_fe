@@ -66,6 +66,7 @@ export default function LoginForm() {
             name={"password"}
             label={"Password"}
             type={"password"}
+            placeholder={"*********"}
             icon={Lock}
             classNameInput="h-11"
           />

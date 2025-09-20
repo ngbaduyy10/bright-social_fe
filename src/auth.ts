@@ -34,6 +34,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: user.id,
           email: user.email,
           name: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
           image: user.image,
           access_token: access_token,
         };
@@ -47,7 +49,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           method: "POST",
           body: { 
             email: profile?.email,
-            username: profile?.name,
+            first_name: profile?.given_name,
+            last_name: profile?.family_name,
            },
         });
         
@@ -59,6 +62,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         user.id = userData.id;
         user.email = userData.email;
         user.name = userData.username;
+        user.first_name = userData.first_name;
+        user.last_name = userData.last_name;
         user.image = userData.image;
         user.access_token = access_token;
       }
@@ -67,12 +72,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     jwt({ token, user }) {
       if (user) {
         token.id = user.id
+        token.first_name = user.first_name
+        token.last_name = user.last_name
         token.access_token = user.access_token
       }
       return token
     },
     session({ session, token }) {
       session.user.id = token.id as string
+      session.user.first_name = token.first_name as string
+      session.user.last_name = token.last_name as string
       session.user.access_token = token.access_token as string
       return session
     },

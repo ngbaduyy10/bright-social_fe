@@ -23,7 +23,8 @@ export default function RegisterForm() {
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
-      username: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -62,15 +63,26 @@ export default function RegisterForm() {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 w-full">
-          <CustomFormControl
-            control={form.control}
-            name={"username"}
-            label={"Username"}
-            type={"text"}
-            placeholder={"e.g. John Doe"}
-            icon={User}
-            classNameInput="h-11"
-          />
+          <div className="grid sm:grid-cols-2 grid-cols-1 gap-3 w-full">
+            <CustomFormControl
+              control={form.control}
+              name={"firstName"}
+              label={"First Name"}
+              type={"text"}
+              placeholder={"e.g. John"}
+              icon={User}
+              classNameInput="h-11"
+            />
+            <CustomFormControl
+              control={form.control}
+              name={"lastName"}
+              label={"Last Name"}
+              type={"text"}
+              placeholder={"e.g. Doe"}
+              icon={User}
+              classNameInput="h-11"
+            />
+          </div>
           <CustomFormControl
             control={form.control}
             name={"email"}
@@ -85,6 +97,7 @@ export default function RegisterForm() {
             name={"password"}
             label={"Password"}
             type={"password"}
+            placeholder={"*********"}
             icon={Lock}
             classNameInput="h-11"
           />
@@ -93,6 +106,7 @@ export default function RegisterForm() {
             name={"confirmPassword"}
             label={"Confirm Password"}
             type={"password"}
+            placeholder={"*********"}
             icon={Lock}
             classNameInput="h-11"
           />
