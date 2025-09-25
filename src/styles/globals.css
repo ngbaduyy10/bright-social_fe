@@ -112,6 +112,9 @@
 }
 
 @layer base {
+  html {
+    overflow-y: scroll;
+  }
   body {
     @apply font-main;
   }

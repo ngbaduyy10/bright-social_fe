@@ -40,10 +40,10 @@ export default function AvatarDropDown() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56 border-gray-200">
-        <div className="flex items-center justify-start gap-2 p-2">
-          <div className="flex flex-col space-y-1 leading-none">
+        <div className="flex items-center justify-start gap-2 px-2 py-1">
+          <div className="flex flex-col">
             {user?.name && (
-              <p className="font-medium truncate">{user.name}</p>
+              <p className="font-sm truncate">{user.name}</p>
             )}
             {user?.email && (
               <p className="truncate text-sm text-muted-foreground">
