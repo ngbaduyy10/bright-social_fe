@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="bg-background">
       <body className={`${sen.variable} antialiased`}>
         {children}
         <Toaster position="top-right" closeButton={true} />
