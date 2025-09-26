@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -50,9 +54,9 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary:  #f2b855;
+  --primary: #f2b855;
   --primary-foreground: oklch(0.985 0 0);
-  --secondary:  #fcf0dc;
+  --secondary: #fcf0dc;
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -125,10 +129,89 @@
     @apply w-full sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1240px] mx-auto px-4;
   }
   .scrollbar-hide {
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
   }
   .scrollbar-hide::-webkit-scrollbar {
-    display: none;  /* Safari and Chrome */
+    display: none; /* Safari and Chrome */
+  }
+}
+
+@layer components {
+  /* Carousel */
+  .nav-button {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 9999px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    outline: none;
+    z-index: 20;
+    opacity: 0.8;
+    top: 50%;
+    transform: translateY(-50%) scale(0.9);
+    transition: transform 0.25s ease, background-color 0.25s ease,
+      opacity 0.25s ease;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .light .nav-button {
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    transform: translateY(-50%) scale(0.8);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+  }
+
+  .light .nav-button:hover {
+    background: rgba(0, 0, 0, 0.6);
+    transform: translateY(-50%) scale(1.2);
+    opacity: 1;
+  }
+
+  .dark .nav-button {
+    background: rgba(255, 255, 255, 0.3);
+    color: #1f2937;
+    transform: translateY(-50%) scale(0.8);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+  }
+
+  .dark .nav-button:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateY(-50%) scale(1.2);
+    opacity: 1;
+  }
+
+  .nav-button:active {
+    transform: translateY(-50%) scale(1.1);
+  }
+  .nav-button:focus-visible {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35);
+  }
+
+  .nav-button svg {
+    transition: transform 0.2s ease;
+  }
+  .nav-prev:hover svg {
+    transform: translateX(-2px);
+  }
+  .nav-next:hover svg {
+    transform: translateX(2px);
+  }
+  .nav-prev:hover svg {
+    transform: translateX(-2px);
+  }
+
+  /* vị trí mặc định mobile (nếu muốn) */
+  .nav-prev {
+    left: 1rem;
+  }
+  .nav-next {
+    right: 1rem;
   }
 }
