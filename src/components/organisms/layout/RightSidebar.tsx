@@ -9,12 +9,12 @@ interface Sponsor {
 }
 const sponsors: Sponsor[] = [
   {
-    name: "Gisney",
-    content: "Make 2 posts at our new theme park.",
+    name: "Sponsor 1",
+    content: "Short content 1.",
   },
   {
-    name: "Foo bar",
-    content: "baz quux.",
+    name: "Sponsor 2",
+    content: "This is a longer sponsor's content 2.",
   },
   {
     name: "Lorem ipsum",
@@ -49,7 +49,7 @@ export default function RightSidebar() {
         {/* Sponsors */}
         <h2 className="font-semibold text-lg mb-2">Sponsors</h2>
         {sponsors.slice(0, 3).map((item, index) => (
-          <div key={index} className="flex flex-1 items-center justify-between min-h-[72px]">
+          <div key={index} className="flex justify-between min-h-[72px]">
             {/* avatar + text */}
             <div className="flex gap-3">
               {/* avatar */}
@@ -66,7 +66,7 @@ export default function RightSidebar() {
               </div>
             </div>
             {/* button */}
-            <div>
+            <div className="py-1">
               <CommonButton>
                 <span>View</span>
               </CommonButton>
@@ -74,7 +74,7 @@ export default function RightSidebar() {
           </div>
         ))}
       </div>
-      <div className="px-4 py-6 bg-white rounded-lg min-h-[200px]">
+      <div className="px-4 py-6 bg-white rounded-lg">
         {/* Trending */}
         <h2 className="font-semibold text-lg mb-2">Trending</h2>
         {topics.slice(0, 3).map((item, index) => (
@@ -90,9 +90,9 @@ export default function RightSidebar() {
         {onlineUsers.slice(0, 3).map((item, index) => {
           let avatarStatus = `absolute bottom-1 right-0 w-3 h-3 border-2 border-white rounded-full bg-${item.status}-500`;
           return (
-            <div key={index} className="flex items-center justify-between min-h-[52px]">
+            <div key={index} className="flex justify-between min-h-[52px]">
               {/* avatar + text */}
-              <div className="flex flex-1 gap-3">
+              <div className="flex gap-3">
                 {/* avatar */}
                 <div className="relative flex-shrink-0 py-1">
                   <UserAvatar
@@ -106,10 +106,12 @@ export default function RightSidebar() {
                   <span className="font-medium line-clamp-1">{item.name}</span>
                 </div>
                 {/* button */}
+              </div >
+              <div className="py-1">
+                <CommonButton>
+                  <span>Chat</span>
+                </CommonButton>
               </div>
-              <CommonButton>
-                <span>Chat</span>
-              </CommonButton>
             </div>
           )
         }
