@@ -17,13 +17,13 @@ export default async function HomePage() {
       <div className="flex items-center gap-2 mb-6 overflow-x-auto scrollbar-hide">
         <CreateStoryCard />
         {initialStories.map((story: Story) => (
-          <StoryCard key={story.id} />
+          <StoryCard key={story.id} story={story} />
         ))}
       </div>
       
       <div className="flex flex-col gap-4 max-w-2xl mx-auto">
         {initialPosts.map((post: Post) => (
-          <PostCard key={post.id} />
+          <PostCard key={post.id} post={post} />
         ))}
       </div>
     </div>

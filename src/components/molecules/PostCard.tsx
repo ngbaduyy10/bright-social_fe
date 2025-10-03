@@ -1,66 +1,59 @@
-import UserAvatar from "@/components/atoms/UserAvatar"
-import { Heart, MessageCircle, Share, MoreHorizontal } from "lucide-react"
+import UserAvatar from "@/components/atoms/UserAvatar";
+import { Heart, MessageCircle, Share2, MoreHorizontal } from "lucide-react";
+import Post from "@/models/post";
+import { getTimeAgo } from "@/utils/helpers";
+import Image from "next/image";
+import PostContent from "@/components/atoms/PostContent";
 
 interface PostCardProps {
-  author?: {
-    name: string
-    avatar?: string
-    username: string
-  }
-  content?: string
-  image?: string
-  likes?: number
-  comments?: number
-  timestamp?: string
+  post: Post;
 }
 
-export default function PostCard({
-  author = {
-    name: "John Doe",
-    username: "@johndoe",
-  },
-  content = "This is a sample post content. It can contain multiple lines of text and will wrap naturally within the card layout.",
-  image,
-  likes = 24,
-  comments = 8,
-  timestamp = "2h ago"
-}: PostCardProps) {
+export default function PostCard({ post }: PostCardProps) {
   return (
-    <div className="bg-white rounded-lg p-6">
-      <div className="flex items-center justify-between mb-4">
+    <div className="bg-white flex flex-col gap-4 rounded-lg p-6">
+      <div className="flex items-start justify-between">
         <div className="flex items-center space-x-3">
           <UserAvatar 
-            image={author.avatar}
-            username={author.name}
+            image={post.user.image}
           />
           <div>
-            <h3 className="font-semibold text-foreground">{author.name}</h3>
-            <p className="text-sm text-muted-foreground">{author.username} • {timestamp}</p>
+            <p className="font-semibold text-foreground">{`${post.user.first_name} ${post.user.last_name}`}</p>
+            <p className="text-sm text-muted-foreground">{`@${post.user.username}`} • {getTimeAgo(post.created_at)}</p>
           </div>
         </div>
 
         <MoreHorizontal size={20} />
       </div>
 
-      <div className="flex flex-col gap-3 mb-4">
-        <p className="text-foreground leading-relaxed">{content}</p>
-      
-        <div className="w-full h-90 bg-background rounded-lg flex-center">
-          <div className="text-muted-foreground text-sm">Image placeholder</div>
-        </div>
+      <div className="flex flex-col gap-3">
+        <PostContent content={post.content} />
+        {post.images && post.images.length > 0 && (
+          <div className="w-full max-h-100 md:max-h-150 rounded-lg flex-center overflow-hidden">
+            <Image
+              src={post.images[0].url}
+              alt="Post Image"
+              width={0}
+              height={0}
+              sizes="100vw"
+              loading="lazy"
+              className="w-full h-auto object-cover"
+            />
+          </div>
+        )}
       </div>
 
       <div className="flex items-center gap-6 pt-3 border-t border-border">
         <div className="flex items-center gap-2 text-muted-foreground">
           <Heart size={20} />
-          <span>{likes}</span>
+          <span>10</span>
         </div>
         <div className="flex items-center gap-2 text-muted-foreground">
           <MessageCircle size={20} />
-          <span>{comments}</span>
+          <span>10</span>
         </div>
         <div className="flex items-center gap-2 text-muted-foreground">
-          <Share size={20} />
+          <Share2 size={20} />
           <span>Share</span>
         </div>
       </div>
