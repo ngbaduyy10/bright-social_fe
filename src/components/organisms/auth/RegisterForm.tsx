@@ -44,7 +44,9 @@ export default function RegisterForm() {
         if (!response.error) {
           form.reset();
           router.push("/home");
-          toast.success("Registration successful!");
+          setTimeout(() => {
+            toast.success("Registration successful!");
+          }, 500);
         } else {
           toast.error("Registration failed. Please try again.");
         }

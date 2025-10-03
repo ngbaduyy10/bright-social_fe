@@ -36,7 +36,9 @@ export default function LoginForm() {
       });
       if (!response.error) {
         router.push("/home");
-        toast.success("Login successful!");
+        setTimeout(() => {
+          toast.success("Login successful!");
+        }, 500);
       } else {
         toast.error("Invalid email or password.");
       }
