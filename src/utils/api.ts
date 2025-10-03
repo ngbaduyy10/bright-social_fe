@@ -1,3 +1,5 @@
+import { auth } from "@/auth";
+
 const API_BASE_URL = process.env.BE_URL;
 
 type NextFetchRequestConfig = {
@@ -42,6 +44,24 @@ export async function fetchApi(url: string, options?: FetchAPIOptions) {
     }
   } catch (error) {
     console.error(`Error ${method} data:`, error);
+    throw error;
+  }
+}
+
+export async function fetchApiWithAuth(url: string, options?: Omit<FetchAPIOptions, 'authToken'>) {
+  try {
+    const session = await auth();
+    
+    if (!session?.user?.access_token) {
+      throw new Error("No access token found in session");
+    }
+
+    return fetchApi(url, {
+      ...options,
+      authToken: session.user.access_token,
+    });
+  } catch (error) {
+    console.error("Error fetching with auth:", error);
     throw error;
   }
 }

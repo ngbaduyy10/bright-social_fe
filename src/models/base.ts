@@ -1,5 +1,6 @@
-export default interface BaseModel {
+export default interface Base {
   id: string;
-  createdAt: Date;
-  updatedAt: Date;
+  is_active: boolean;
+  created_at: Date;
+  updated_at: Date;
 }
