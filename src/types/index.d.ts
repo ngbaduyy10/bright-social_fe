@@ -17,6 +17,11 @@ declare global {
     IMAGE = 'image',
     VIDEO = 'video',
   }
+
+  enum MediaType {
+    IMAGE = 'image',
+    VIDEO = 'video',
+  }
 }
 
 export {};

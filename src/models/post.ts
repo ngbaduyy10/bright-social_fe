@@ -1,9 +1,9 @@
 import Base from "./base";
-import Image from "./image";
+import Media from "./media";
 import User from "./user";
 
 export default interface Post extends Base {
   content?: string;
-  images?: Image[];
+  media?: Media[];
   user: User;
 }
