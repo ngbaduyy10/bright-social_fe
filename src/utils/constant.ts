@@ -42,3 +42,6 @@ export const homeNavItems = [
   { id: "feature", href: "/feature", label: "Feature" },
   { id: "contact", href: "/contact", label: "Contact" },
 ];
+
+export const postLimit = 5;
+export const storyLimit = 10;

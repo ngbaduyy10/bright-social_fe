@@ -1,15 +1,17 @@
 import CreateStoryCard from '@/components/molecules/CreateStoryCard'
 import StoryCard from '@/components/molecules/StoryCard'
-import PostCard from '@/components/molecules/PostCard'
 import { fetchApiWithAuth } from '@/utils/api';
 import Post from '@/models/post';
 import Story from '@/models/story';
+import PostList from '@/components/organisms/PostList';
+import { postLimit } from '@/utils/constant';
+import { storyLimit } from '@/utils/constant';
 
 export default async function HomePage() {
-  const initialPostsResponse: ApiResponse<Post[]> = await fetchApiWithAuth("/post?page=1&limit=10", { cache: "no-store" });
+  const initialPostsResponse: ApiResponse<Post[]> = await fetchApiWithAuth(`/post?page=1&limit=${postLimit}`, { cache: "no-store" });
   const initialPosts: Post[] = initialPostsResponse.data;
 
-  const initialStoriesResponse: ApiResponse<Story[]> = await fetchApiWithAuth("/story?page=1&limit=10", { cache: "no-store" });
+  const initialStoriesResponse: ApiResponse<Story[]> = await fetchApiWithAuth(`/story?page=1&limit=${storyLimit}`, { cache: "no-store" });
   const initialStories: Story[] = initialStoriesResponse.data;
 
   return (
@@ -21,11 +23,7 @@ export default async function HomePage() {
         ))}
       </div>
       
-      <div className="flex flex-col gap-4 max-w-2xl mx-auto">
-        {initialPosts.map((post: Post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
-      </div>
+      <PostList initialPosts={initialPosts} />
     </div>
   );
 }
