@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { fetchApiWithAuth } from '@/utils/api';
 import Post from '@/models/post';
 import { postLimit } from '@/utils/constant';
+import { ApiResponse } from '@/dto/apiResponse.dto';
 
 export async function GET(request: NextRequest) {
   try {
