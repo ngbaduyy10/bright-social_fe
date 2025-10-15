@@ -1,4 +1,5 @@
 import Base from "./base";
+import { Gender } from "@/types";
 
 export default interface User extends Base {
   email: string;
