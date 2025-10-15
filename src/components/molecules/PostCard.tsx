@@ -29,14 +29,13 @@ export default function PostCard({ post }: PostCardProps) {
       <div className="flex flex-col gap-3">
         <PostContent content={post.content} />
         {post.media && post.media.length > 0 && (
-          <div className="w-full max-h-100 md:max-h-150 rounded-lg flex-center overflow-hidden">
+          <div className="w-full max-h-100 md:max-h-150 rounded-lg overflow-hidden">
             <Image
               src={post.media[0].url}
               alt="Post Image"
               width={0}
               height={0}
               sizes="100vw"
-              loading="lazy"
               className="w-full h-auto object-cover"
             />
           </div>
