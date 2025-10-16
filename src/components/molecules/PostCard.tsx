@@ -33,8 +33,8 @@ export default function PostCard({ post }: PostCardProps) {
             <Image
               src={post.media[0].url}
               alt="Post Image"
-              width={0}
-              height={0}
+              width={post.media[0].width}
+              height={post.media[0].height}
               sizes="100vw"
               className="w-full h-auto object-cover"
             />
