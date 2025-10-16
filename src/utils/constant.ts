@@ -30,6 +30,39 @@ export const homeFeatures = [
   }
 ];
 
+export const feedbackData = [
+  {
+    name: "Mark Ramirez",
+    location: "London, UK",
+    feedback: "Their team took our wellness brand and elevated it to new heights with their thoughtful designs and strategic branding, they've helped us create a cohesive and compelling brand identity.",
+  },
+  {
+    name: "Sarah Chen",
+    location: "San Francisco, USA",
+    feedback: "Absolutely game-changing! The platform's intuitive interface and powerful analytics have helped us triple our engagement rate within just three months. Highly recommended for any serious content creator.",
+  },
+  {
+    name: "James Mitchell",
+    location: "Toronto, Canada",
+    feedback: "As a small business owner, I was struggling to manage multiple social accounts. This platform simplified everything and the scheduling features have saved me countless hours every week.",
+  },
+  {
+    name: "Priya Sharma",
+    location: "Mumbai, India",
+    feedback: "The community features are outstanding! I've connected with like-minded creators and the collaboration tools have opened up so many new opportunities for my brand. Worth every penny!",
+  },
+  {
+    name: "Lucas Silva",
+    location: "São Paulo, Brazil",
+    feedback: "What impressed me most was the customer support team. They were quick to respond and genuinely helpful. The platform itself is robust, reliable, and constantly improving with new features.",
+  },
+  {
+    name: "Emma Thompson",
+    location: "Sydney, Australia",
+    feedback: "I've tried many social media management tools, but this one stands out. The content suggestions are spot-on, the posting queue is seamless, and the ROI tracking helps me justify every marketing dollar spent.",
+  },
+];
+
 export const navigationItems = [
   { id: "home", href: "/home", label: "Home", icon: Home },
   { id: "messages", href: "/messages", label: "Messages", icon: MessageCircle },
