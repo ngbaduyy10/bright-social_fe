@@ -82,7 +82,7 @@ export const navigationItems = [
   { id: "home", href: "/home", label: "Home", icon: Home },
   { id: "messages", href: "/messages", label: "Messages", icon: MessageCircle },
   { id: "notifications", href: "/notifications", label: "Notifications", icon: Bell },
-  { id: "connection", href: "/connection", label: "Connections", icon: Users },
+  { id: "connections", href: "/connections", label: "Connections", icon: Users },
   { id: "saved", href: "/saved", label: "Saved", icon: Bookmark },
 ];
 
