@@ -14,7 +14,7 @@ interface UseInfiniteDataOptions<T> {
 export function useInfiniteData<T>({ initialData, limit, endpoint }: UseInfiniteDataOptions<T>) {
   const getKey = (pageIndex: number, previousPageData: T[]) => {
     if (previousPageData && previousPageData.length === 0) return null;
-    return `/api/${endpoint}?page=${pageIndex + 1}&limit=${limit}`;
+    return `/api${endpoint}?page=${pageIndex + 1}&limit=${limit}`;
   };
 
   const {

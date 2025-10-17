@@ -16,7 +16,7 @@ export default function StoryList({ initialUserStories }: StoryListProps) {
   const { items: userStories, isLoadingMore, isReachingEnd, loadMore } = useInfiniteData<UserStory>({
     initialData: initialUserStories,
     limit: storyLimit,
-    endpoint: 'story'
+    endpoint: '/story'
   });
   const loadMoreRef = useRef<HTMLDivElement>(null);
 

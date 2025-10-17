@@ -15,9 +15,9 @@ export default async function HomePage() {
   const initialUserStories: UserStory[] = initialStoriesResponse.data;
 
   return (
-    <div>
+    <>
       <StoryList initialUserStories={initialUserStories} />
       <PostList initialPosts={initialPosts} />
-    </div>
+    </>
   );
 }

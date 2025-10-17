@@ -9,13 +9,14 @@ import { postLimit } from "@/utils/constant";
 
 interface PostListProps {
   initialPosts: Post[];
+  isSaved?: boolean;
 }
 
-export default function PostList({ initialPosts }: PostListProps) {
+export default function PostList({ initialPosts, isSaved }: PostListProps) {
   const { items: posts, isLoadingMore, isReachingEnd, loadMore } = useInfiniteData<Post>({
     initialData: initialPosts,
     limit: postLimit,
-    endpoint: 'post'
+    endpoint: isSaved ? '/post/saved' : '/post'
   });
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
