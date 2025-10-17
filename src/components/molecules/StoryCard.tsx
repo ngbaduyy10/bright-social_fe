@@ -35,7 +35,7 @@ export default function StoryCard({ userStory }: StoryCardProps) {
       
       <UserAvatar 
         image={user.image}
-        className="absolute top-2 left-2 w-8 h-8 border-2 border-white z-10"
+        className="absolute top-2 left-2 w-8 h-8 border-2 border-primary z-10"
       />
     </div>
   )

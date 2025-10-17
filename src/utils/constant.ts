@@ -6,8 +6,9 @@ import {
   File,
   ChartPie,
   Bookmark,
+  Bell,
 } from "lucide-react";
-
+import DefaultAvatar from "@/static/icons/default_avatar.png";
 
 export const homeFeatures = [
   {
@@ -63,10 +64,25 @@ export const feedbackData = [
   },
 ];
 
+export const onlineUsers = [
+  { id: 1, name: "Sarah Johnson", username: "sarahjohnson", avatar: DefaultAvatar },
+  { id: 2, name: "Mike Chen", username: "mikechen", avatar: DefaultAvatar },
+  { id: 3, name: "Emma Williams", username: "emmawilliams", avatar: DefaultAvatar },
+  { id: 4, name: "Alex Rodriguez", username: "alexrodriguez", avatar: DefaultAvatar },
+  { id: 5, name: "Lisa Anderson", username: "lisaanderson", avatar: DefaultAvatar },
+];
+
+export const trendingTopics = [
+  { hashtag: "#TechTalk", posts: "1.2K posts" },
+  { hashtag: "#WeekendVibes", posts: "856 posts" },
+  { hashtag: "#FoodLover", posts: "634 posts" }
+];
+
 export const navigationItems = [
   { id: "home", href: "/home", label: "Home", icon: Home },
   { id: "messages", href: "/messages", label: "Messages", icon: MessageCircle },
-  { id: "connection", href: "/connection", label: "Connection", icon: Users },
+  { id: "notifications", href: "/notifications", label: "Notifications", icon: Bell },
+  { id: "connection", href: "/connection", label: "Connections", icon: Users },
   { id: "saved", href: "/saved", label: "Saved", icon: Bookmark },
 ];
 
