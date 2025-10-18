@@ -9,14 +9,14 @@ import { postLimit } from "@/utils/constant";
 
 interface PostListProps {
   initialPosts: Post[];
-  isSaved?: boolean;
+  endpoint?: string;
 }
 
-export default function PostList({ initialPosts, isSaved }: PostListProps) {
+export default function PostList({ initialPosts, endpoint }: PostListProps) {
   const { items: posts, isLoadingMore, isReachingEnd, loadMore } = useInfiniteData<Post>({
     initialData: initialPosts,
     limit: postLimit,
-    endpoint: isSaved ? '/post/saved' : '/post'
+    endpoint: endpoint ? `/post${endpoint}` : '/post'
   });
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
@@ -55,7 +55,7 @@ export default function PostList({ initialPosts, isSaved }: PostListProps) {
         {isLoadingMore && <PostSkeleton />}
         {isReachingEnd && posts.length > 0 && (
           <div className="flex-center py-4">
-            <p className="text-gray-500">No more posts to load</p>
+            <p className="text-gray-500">No more posts</p>
           </div>
         )}
       </div>

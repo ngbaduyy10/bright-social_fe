@@ -4,6 +4,7 @@ import Post from "@/models/post";
 import { getTimeAgo } from "@/utils/helpers";
 import Image from "next/image";
 import PostContent from "@/components/atoms/PostContent";
+import Link from "next/link";
 
 interface PostCardProps {
   post: Post;
@@ -11,14 +12,15 @@ interface PostCardProps {
 
 export default function PostCard({ post }: PostCardProps) {
   return (
-    <div className="bg-white flex flex-col gap-4 rounded-lg p-6">
+    <div className="bg-white flex flex-col gap-4 shadow-sm rounded-lg p-6">
       <div className="flex items-start justify-between">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2" >
           <UserAvatar 
             image={post.user.image}
+            href={`/${post.user.username}`}
           />
           <div>
-            <p className="font-semibold text-foreground">{`${post.user.first_name} ${post.user.last_name}`}</p>
+            <Link href={`/${post.user.username}`} className="font-semibold text-foreground">{`${post.user.first_name} ${post.user.last_name}`}</Link>
             <p className="text-sm text-muted-foreground">{`@${post.user.username}`} • {getTimeAgo(post.created_at)}</p>
           </div>
         </div>

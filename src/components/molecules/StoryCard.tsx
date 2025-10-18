@@ -13,7 +13,7 @@ export default function StoryCard({ userStory }: StoryCardProps) {
   
   return (
     <div 
-      className="relative w-[130px] h-[180px] rounded-xl overflow-hidden cursor-pointer flex-shrink-0"
+      className="relative w-[130px] h-[180px] shadow-sm rounded-xl overflow-hidden cursor-pointer flex-shrink-0"
       style={mainStory.type === StoryType.TEXT && mainStory.background_color ? { backgroundColor: mainStory.background_color } : undefined}
     >
       {mainStory.type === StoryType.IMAGE && (

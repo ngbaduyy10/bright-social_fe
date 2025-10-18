@@ -94,3 +94,8 @@ export const homeNavItems = [
 
 export const postLimit = 5;
 export const storyLimit = 8;
+
+export const profileTabs = [
+  { id: "posts", label: "Posts" },
+  { id: "media", label: "Media" },
+];

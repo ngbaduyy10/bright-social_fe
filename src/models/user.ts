@@ -1,5 +1,6 @@
 import Base from "./base";
 import { Gender } from "@/types";
+import Post from "./post";
 
 export default interface User extends Base {
   email: string;
@@ -12,4 +13,5 @@ export default interface User extends Base {
   cover_image?: string;
   bio?: string;
   is_verified?: boolean;
+  posts?: Post[];
 }

@@ -10,7 +10,7 @@ export default async function SavedPage() {
   
   return (
     <>
-      <PostList initialPosts={initialPosts} isSaved={true} />
+      <PostList initialPosts={initialPosts} endpoint={`/saved`} />
     </>
   )
 }
