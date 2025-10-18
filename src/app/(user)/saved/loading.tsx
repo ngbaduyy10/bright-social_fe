@@ -1,10 +1,12 @@
-import { LoaderCircle } from "lucide-react";
+import PostSkeleton from "@/components/atoms/skeleton/PostSkeleton";
 
 export default function Loading() {
   return (
-    <div className="flex-center min-h-[80vh]">
-      <LoaderCircle className="animate-spin w-10 h-10 text-primary" />
-    </div>
+    <div className="flex flex-col gap-4 max-w-2xl mx-auto">
+        {Array.from({ length: 2 }).map((_, idx) => (
+          <PostSkeleton key={idx} />
+        ))}
+      </div>
   );
 }
 

@@ -1,18 +1,17 @@
 import { fetchApiWithAuth } from '@/utils/api';
-import Post from '@/models/post';
 import PostList from '@/components/organisms/PostList';
-import { postLimit } from '@/utils/constant';
-import { storyLimit } from '@/utils/constant';
+import { postLimit, storyLimit } from '@/utils/constant';
 import { ApiResponse } from '@/dto/apiResponse.dto';
-import { UserStory } from '@/dto/userStory.dto';
 import StoryList from '@/components/organisms/StoryList';
+import { HomePageResponse } from '@/dto/homePageResponse.dto';
 
 export default async function HomePage() {
-  const initialPostsResponse: ApiResponse<Post[]> = await fetchApiWithAuth(`/post?page=1&limit=${postLimit}`, { cache: "no-store" });
-  const initialPosts: Post[] = initialPostsResponse.data;
-
-  const initialStoriesResponse: ApiResponse<UserStory[]> = await fetchApiWithAuth(`/story?page=1&limit=${storyLimit}`, { cache: "no-store" });
-  const initialUserStories: UserStory[] = initialStoriesResponse.data;
+  const initialHomePageResponse: ApiResponse<HomePageResponse> = await fetchApiWithAuth(
+    `/page/news-feed?post-limit=${postLimit}&story-limit=${storyLimit}`, 
+    { cache: "no-store" }
+  );
+  const initialPosts = initialHomePageResponse.data.posts;
+  const initialUserStories = initialHomePageResponse.data.stories;
 
   return (
     <>

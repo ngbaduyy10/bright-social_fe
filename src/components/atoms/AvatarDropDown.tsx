@@ -55,7 +55,7 @@ export default function AvatarDropDown() {
         <DropdownMenuSeparator />
         <DropdownMenuItem 
           className="cursor-pointer"
-          onClick={() => router.push('/profile')}
+          onClick={() => router.push(`/${user?.name}`)}
         >
           <User className="mr-1" />
           <span>Profile</span>
