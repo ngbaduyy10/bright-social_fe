@@ -1,7 +1,7 @@
 import { fetchApiWithAuth } from "@/utils/api";
 import { ApiResponse } from "@/dto/apiResponse.dto";
 import User from "@/models/user";
-import { postLimit, storyLimit } from '@/utils/constant';
+import { postLimit, storyLimit, mediaLimit } from '@/utils/constant';
 import ProfileHeader from "../../../components/organisms/profile/ProfileHeader";
 import ProfileTabs from "../../../components/organisms/profile/ProfileTabs";
 import { auth } from "@/auth";
@@ -13,7 +13,7 @@ interface ProfilePageProps {
 export default async function ProfilePage({ params }: ProfilePageProps) {
   const { username } = await params;
   const response: ApiResponse<User> = await fetchApiWithAuth(
-    `/page/profile/${username}?post-limit=${postLimit}&story-limit=${storyLimit}`, 
+    `/page/profile/${username}?post-limit=${postLimit}&story-limit=${storyLimit}&media-limit=${mediaLimit}`, 
     { cache: "no-store" }
   );
   const user = response.data;
@@ -23,7 +23,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   return (
     <div className="space-y-4">
       <ProfileHeader user={user} isUser={isUser} />
-      <ProfileTabs posts={user.posts || []} />
+      <ProfileTabs user={user} />
     </div>
   );
 }

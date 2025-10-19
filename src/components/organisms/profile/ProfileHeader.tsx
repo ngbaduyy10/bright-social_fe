@@ -16,7 +16,7 @@ export default function ProfileHeader({ user, isUser }: ProfileHeaderProps) {
 
   return (
     <div className="bg-white shadow-sm rounded-lg overflow-hidden">
-      <div className={`relative h-80 w-full ${!user.cover_image && 'bg-gray-200'}`}>
+      <div className={`relative h-60 md:h-80 w-full ${!user.cover_image && 'bg-gray-200'}`}>
         {user.cover_image && (
           <Image
             src={user.cover_image}
