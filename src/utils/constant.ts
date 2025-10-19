@@ -7,8 +7,13 @@ import {
   ChartPie,
   Bookmark,
   Bell,
+  Heart,
+  Share,
+  UserPlus,
+  UserCheck,
 } from "lucide-react";
 import DefaultAvatar from "@/static/icons/default_avatar.png";
+import { NotificationType } from "@/types";
 
 export const homeFeatures = [
   {
@@ -100,3 +105,146 @@ export const profileTabs = [
   { id: "posts", label: "Posts" },
   { id: "media", label: "Media" },
 ];
+
+export const notifications = [
+  {
+    id: 1,
+    type: NotificationType.LIKE,
+    actor: {
+      name: "Sarah Johnson",
+      avatar: DefaultAvatar.src,
+    },
+  },
+  {
+    id: 2,
+    type: NotificationType.SHARE,
+    actor: {
+      name: "Mike Chen",
+      avatar: DefaultAvatar.src,
+    },
+  },
+  {
+    id: 3,
+    type: NotificationType.COMMENT,
+    actor: {
+      name: "Emma Williams",
+      avatar: DefaultAvatar.src,
+    },
+    content: "I've liked your post!",
+  },
+  {
+    id: 4,
+    type: NotificationType.ADD_FRIEND,
+    actor: {
+      name: "Alex Rodriguez",
+      avatar: DefaultAvatar.src,
+    },
+  },
+  {
+    id: 5,
+    type: NotificationType.ACCEPT_FRIEND,
+    actor: {
+      name: "Lisa Anderson",
+      avatar: DefaultAvatar.src,
+    },
+  },
+  {
+    id: 6,
+    type: NotificationType.LIKE,
+    actor: {
+      name: "David Kim",
+      avatar: DefaultAvatar.src,
+    },
+  },
+  {
+    id: 7,
+    type: NotificationType.SHARE,
+    actor: {
+      name: "Maria Garcia",
+      avatar: DefaultAvatar.src,
+    },
+  },
+  {
+    id: 8,
+    type: NotificationType.COMMENT,
+    actor: {
+      name: "John Smith",
+      avatar: DefaultAvatar.src,
+    },
+    content: "Great post! Thanks for sharing.",
+  },
+  {
+    id: 9,
+    type: NotificationType.ADD_FRIEND,
+    actor: {
+      name: "Sophie Brown",
+      avatar: DefaultAvatar.src,
+    },
+  },
+  {
+    id: 10,
+    type: NotificationType.LIKE,
+    actor: {
+      name: "Tom Wilson",
+      avatar: DefaultAvatar.src,
+    },
+  },
+  {
+    id: 11,
+    type: NotificationType.ACCEPT_FRIEND,
+    actor: {
+      name: "Rachel Green",
+      avatar: DefaultAvatar.src,
+    },
+  },
+  {
+    id: 12,
+    type: NotificationType.SHARE,
+    actor: {
+      name: "Kevin Lee",
+      avatar: DefaultAvatar.src,
+    },
+  },
+  {
+    id: 13,
+    type: NotificationType.COMMENT,
+    actor: {
+      name: "Amanda Taylor",
+      avatar: DefaultAvatar.src,
+    },
+    content: "This is amazing! Can't wait to see more.",
+  },
+  {
+    id: 14,
+    type: NotificationType.LIKE,
+    actor: {
+      name: "Chris Martin",
+      avatar: DefaultAvatar.src,
+    },
+  },
+  {
+    id: 15,
+    type: NotificationType.ADD_FRIEND,
+    actor: {
+      name: "Jessica White",
+      avatar: DefaultAvatar.src,
+    },
+  },
+];
+
+
+export const notificationIcons = {
+  [NotificationType.LIKE]: Heart,
+  [NotificationType.SHARE]: Share,
+  [NotificationType.COMMENT]: MessageCircle,
+  [NotificationType.ADD_FRIEND]: UserPlus,
+  [NotificationType.ACCEPT_FRIEND]: UserCheck,
+};
+
+export const notificationColors = {
+  [NotificationType.LIKE]: "bg-red-100",
+  [NotificationType.SHARE]: "bg-blue-100",
+  [NotificationType.COMMENT]: "bg-yellow-100",
+  [NotificationType.ADD_FRIEND]: "bg-purple-100",
+  [NotificationType.ACCEPT_FRIEND]: "bg-green-100",
+};

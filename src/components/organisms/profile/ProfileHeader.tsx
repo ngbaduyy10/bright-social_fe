@@ -58,11 +58,6 @@ export default function ProfileHeader({ user, isUser }: ProfileHeaderProps) {
                 <UserPlus className="w-4 h-4" />
                 Add friend
               </CommonButton>
-
-              <CommonButton className="gap-2 bg-background text-black hover:bg-gray-200">
-                <UserCheck className="w-4 h-4" />
-                Follow
-              </CommonButton>
               
               <CommonButton className="gap-2 bg-background text-black hover:bg-gray-200">
                 <MessageCircle className="w-4 h-4" />

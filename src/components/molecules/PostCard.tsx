@@ -17,7 +17,7 @@ export default function PostCard({ post }: PostCardProps) {
         <div className="flex items-center space-x-2" >
           <UserAvatar 
             image={post.user.image}
-            href={`/${post.user.username}`}
+            href={`/profile/${post.user.username}`}
           />
           <div>
             <Link href={`/${post.user.username}`} className="font-semibold text-foreground">{`${post.user.first_name} ${post.user.last_name}`}</Link>

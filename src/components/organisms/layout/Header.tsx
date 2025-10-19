@@ -1,8 +1,7 @@
 import Logo from "@/components/atoms/Logo";
-import { Bell } from "lucide-react";
-import CommonButton from "@/components/atoms/CommonButton";
 import SearchInput from "@/components/molecules/SearchInput";
 import AvatarDropDown from "@/components/atoms/AvatarDropDown";
+import NotificationDropdown from "@/components/organisms/NotificationDropdown";
 
 export default function Header() {
   return (
@@ -17,12 +16,7 @@ export default function Header() {
 
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-4">
-              <CommonButton className="p-0 bg-white text-black relative">
-                <Bell size={24} />
-                <span className="absolute top-0 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex-center">
-                  2
-                </span>
-              </CommonButton>
+              <NotificationDropdown />
             </div>
             <AvatarDropDown />
           </div>

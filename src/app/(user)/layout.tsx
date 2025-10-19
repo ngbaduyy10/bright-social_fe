@@ -17,7 +17,7 @@ export default function UserLayout({ children }: { children: ReactNode }) {
           </div>
           
           <div className="flex-1 min-w-0 mx-0 lg:mr-80 xl:mx-80 h-[calc(100vh-116px)] md:h-[calc(100vh-68px)]">
-            <main className="h-full py-4 md:py-6 pl-3 pr-1 bg-background overflow-y-auto main-scrollbar">
+            <main className="h-full py-4 md:py-6 pl-2 pr-1 bg-background overflow-y-auto main-scrollbar">
               {children}
             </main>
           </div>
