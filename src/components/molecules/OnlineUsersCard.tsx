@@ -4,7 +4,7 @@ import { onlineUsers } from "@/utils/constant";
 export default function OnlineUsersCard() {
 
   return (
-    <div className="bg-white rounded-lg p-4">
+    <div className="bg-white rounded-lg p-4 shadow-sm">
       <h3 className="font-semibold text-gray-900 mb-2">Online</h3>
       <div className="space-y-3">
         {onlineUsers.map((user) => (

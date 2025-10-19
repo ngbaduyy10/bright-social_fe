@@ -3,7 +3,7 @@ import sponsorImage from '@/static/images/sponsor.jpg';
 
 export default function SponsorCard() {
   return (
-    <div className="bg-white rounded-lg p-4">
+    <div className="bg-white rounded-lg p-4 shadow-sm">
       <div className="font-semibold text-gray-900 mb-2">Sponsored</div>
       <div className="relative h-48 mb-4 rounded-lg overflow-hidden">
         <Image

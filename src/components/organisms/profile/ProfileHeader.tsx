@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Camera, UserPlus, MessageCircle, UserCheck, UserPen } from "lucide-react";
+import { UserPlus, MessageCircle, UserCheck, UserPen } from "lucide-react";
 import User from "@/models/user";
 import DefaultAvatar from "@/static/icons/default_avatar.png";
 import CommonButton from "@/components/atoms/CommonButton";
@@ -25,11 +25,8 @@ export default function ProfileHeader({ user, isUser }: ProfileHeaderProps) {
             className="object-cover"
           />
         )}
-        <CommonButton className="absolute bottom-4 right-4 bg-background rounded-lg p-2">
-          <Camera className="w-5 h-5 text-black" />
-        </CommonButton>
 
-        <div className="absolute -bottom-16 left-6">
+        <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 md:left-6 md:translate-x-0">
           <div className="relative w-32 h-32 rounded-full bg-white border-4 border-white overflow-hidden">
             <Image
               src={user.image || DefaultAvatar}
@@ -42,14 +39,14 @@ export default function ProfileHeader({ user, isUser }: ProfileHeaderProps) {
       </div>
 
       <div className="pt-18 px-6 pb-6">
-        <div className="flex-between gap-2 items-start">
+        <div className="flex flex-col md:flex-row md:justify-between gap-4 md:gap-2 md:items-start items-center text-center md:text-left">
           <div>
             <h1 className="text-3xl font-bold">{fullName}</h1>
             <p className="text-gray-500">@{user.username}</p>
             <p className="text-gray-500 mt-2">20 friends</p>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex-center flex-wrap gap-2">
             {isUser ? (
               <CommonButton className="gap-2">
                 <UserPen className="w-4 h-4" />
@@ -77,7 +74,7 @@ export default function ProfileHeader({ user, isUser }: ProfileHeaderProps) {
         </div>
 
         {user.bio && (
-          <p className="text-gray-500 mt-4">{user.bio}</p>
+          <p className="text-gray-500 mt-4 text-center md:text-left">{user.bio}</p>
         )}
       </div>
     </div>

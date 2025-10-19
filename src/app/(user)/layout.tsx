@@ -12,17 +12,17 @@ export default function UserLayout({ children }: { children: ReactNode }) {
           <Header />
         </div>
         <div className="flex flex-1 pt-[116px] md:pt-[68px]">
-          <div className="xl:w-80 w-70 fixed top-[68px] left-0 h-[calc(100vh-68px)] max-lg:hidden bg-background z-20">
+          <div className="w-80 fixed top-[68px] left-0 h-[calc(100vh-68px)] max-xl:hidden bg-background z-20">
             <LeftSidebar />
           </div>
           
-          <div className="flex-1 min-w-0 mx-0 md:mr-70 lg:mx-70 xl:mx-80 h-[calc(100vh-116px)] md:h-[calc(100vh-68px)]">
+          <div className="flex-1 min-w-0 mx-0 lg:mr-80 xl:mx-80 h-[calc(100vh-116px)] md:h-[calc(100vh-68px)]">
             <main className="h-full py-4 md:py-6 pl-3 pr-1 bg-background overflow-y-auto main-scrollbar">
               {children}
             </main>
           </div>
           
-          <div className="xl:w-80 w-70 fixed top-[68px] right-0 h-[calc(100vh-68px)] max-md:hidden bg-background z-20">
+          <div className="w-80 fixed top-[68px] right-0 h-[calc(100vh-68px)] max-lg:hidden bg-background z-20">
             <RightSidebar />
           </div>
         </div>
