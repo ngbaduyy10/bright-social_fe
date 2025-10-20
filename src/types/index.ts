@@ -22,3 +22,16 @@ export enum NotificationType {
   ADD_FRIEND = 'add_friend',
   ACCEPT_FRIEND = 'accept_friend',
 }
+
+export enum ConnectionType {
+  FRIEND = 'friend',
+  REQUEST = 'request',
+  SENT = 'sent',
+  SUGGESTED = 'suggested',
+}
+
+export enum FriendStatus {
+  PENDING = 'pending',
+  ACCEPTED = 'accepted',
+  REJECTED = 'rejected',
+}

@@ -10,6 +10,7 @@ export default async function SavedPage() {
   
   return (
     <>
+      <h1 className="mb-4 max-w-2xl mx-auto text-[34px] font-bold">Saved Posts</h1>
       <PostList initialPosts={initialPosts} endpoint={`/saved`} />
     </>
   )

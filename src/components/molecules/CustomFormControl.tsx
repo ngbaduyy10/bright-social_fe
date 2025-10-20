@@ -33,7 +33,7 @@ export default function CustomFormControl<T extends FieldValues>({
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
             <motion.div
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 1 }}
               transition={{ duration: 0.2, ease: "easeInOut" }}
               className="relative"

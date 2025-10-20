@@ -11,6 +11,7 @@ import {
   Share,
   UserPlus,
   UserCheck,
+  UserSearch,
 } from "lucide-react";
 import DefaultAvatar from "@/static/icons/default_avatar.png";
 import { NotificationType } from "@/types";
@@ -100,10 +101,18 @@ export const homeNavItems = [
 export const postLimit = 5;
 export const storyLimit = 8;
 export const mediaLimit = 8;
+export const friendLimit = 12;
 
 export const profileTabs = [
   { id: "posts", label: "Posts" },
   { id: "media", label: "Media" },
+];
+
+export const connectionTabs = [
+  { id: "friend", label: "Friends", icon: UserCheck },
+  { id: "request", label: "Requests", icon: UserPlus },
+  { id: "sent", label: "Sent", icon: Users },
+  { id: "suggested", label: "Suggested", icon: UserSearch },
 ];
 
 export const notifications = [

@@ -3,7 +3,6 @@
 import Media from "@/models/media";
 import { mediaLimit } from "@/utils/constant";
 import { useInfiniteData } from "@/hooks/useInfiniteData";
-import { useRef, useEffect } from "react";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -13,29 +12,11 @@ interface MediaListProps {
 }
 
 export default function MediaList({ initialMedia, userId }: MediaListProps) {
-  const { items: media, isLoadingMore, isReachingEnd, loadMore } = useInfiniteData<Media>({
+  const { items: media, isLoadingMore, isReachingEnd, loadMoreRef } = useInfiniteData<Media>({
     initialData: initialMedia,
     limit: mediaLimit,
     endpoint: `/media/${userId}`
   });
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !isReachingEnd && !isLoadingMore) {
-          loadMore();
-        }
-      }, 
-      { threshold: 0 },
-    );
-
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [isReachingEnd, isLoadingMore, loadMore]);
 
   if (!media || media.length === 0) {
     return (
@@ -56,7 +37,7 @@ export default function MediaList({ initialMedia, userId }: MediaListProps) {
       </div>
 
       <div ref={loadMoreRef} className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-        {isLoadingMore && 
+        {isLoadingMore && !isReachingEnd && 
           Array.from({ length: 3 }).map((_, index) => (
             <Skeleton key={index} className="w-full aspect-square rounded-lg mt-2" />
           ))

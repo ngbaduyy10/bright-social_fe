@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import useSWRInfinite from 'swr/infinite';
 
 const fetcher = async <T>(url: string): Promise<T[]> => {
@@ -6,7 +7,7 @@ const fetcher = async <T>(url: string): Promise<T[]> => {
 };
 
 interface UseInfiniteDataOptions<T> {
-  initialData: T[];
+  initialData?: T[];
   limit: number;
   endpoint: string;
 }
@@ -23,7 +24,7 @@ export function useInfiniteData<T>({ initialData, limit, endpoint }: UseInfinite
     size,
     setSize,
   } = useSWRInfinite<T[]>(getKey, fetcher, {
-    fallbackData: [initialData],
+    ...(initialData && initialData.length > 0 && { fallbackData: [initialData] }),
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     refreshInterval: 0,
@@ -32,12 +33,33 @@ export function useInfiniteData<T>({ initialData, limit, endpoint }: UseInfinite
   const items = data ? data.flat() : [];
   const isReachingEnd = data && data[data.length - 1]?.length < limit;
   const isLoadingMore = isLoading || (size > 0 && !!data && typeof data[size - 1] === 'undefined');
+  const loadMore = () => setSize(size + 1);
+
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isReachingEnd && !isLoadingMore) {
+          loadMore();
+        }
+      }, 
+      { threshold: 0 },
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isReachingEnd, isLoadingMore]);
 
   return {
     items,
     isLoading,
     isLoadingMore,
     isReachingEnd,
-    loadMore: () => setSize(size + 1),
+    loadMore,
+    loadMoreRef,
   };
 }

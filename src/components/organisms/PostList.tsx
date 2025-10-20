@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import PostCard from "../molecules/PostCard";
 import Post from "@/models/post";
 import { useInfiniteData } from "@/hooks/useInfiniteData";
@@ -13,29 +12,11 @@ interface PostListProps {
 }
 
 export default function PostList({ initialPosts, endpoint }: PostListProps) {
-  const { items: posts, isLoadingMore, isReachingEnd, loadMore } = useInfiniteData<Post>({
+  const { items: posts, isLoadingMore, isReachingEnd, loadMoreRef } = useInfiniteData<Post>({
     initialData: initialPosts,
     limit: postLimit,
     endpoint: endpoint ? `/post${endpoint}` : '/post'
   });
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !isReachingEnd && !isLoadingMore) {
-          loadMore();
-        }
-      }, 
-      { threshold: 0 },
-    );
-
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [isReachingEnd, isLoadingMore, loadMore]);
 
   if (!posts || posts.length === 0) {
     return (

@@ -11,7 +11,7 @@ export default function Header() {
 
         <div className="flex items-center gap-14">
           <div className="max-md:hidden">
-            <SearchInput />
+            <SearchInput className="w-[350px]" />
           </div>
 
           <div className="flex items-center gap-6">
@@ -23,7 +23,7 @@ export default function Header() {
         </div>
       </div>
       <div className="md:hidden">
-        <SearchInput />
+        <SearchInput className="w-full" />
       </div>
     </header>
   )
