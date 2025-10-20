@@ -2,9 +2,9 @@ import UserAvatar from "@/components/atoms/UserAvatar";
 import { Heart, MessageCircle, Share2, MoreHorizontal } from "lucide-react";
 import Post from "@/models/post";
 import { getTimeAgo } from "@/utils/helpers";
-import Image from "next/image";
 import PostContent from "@/components/atoms/PostContent";
 import Link from "next/link";
+import PostMedia from "./PostMedia";
 
 interface PostCardProps {
   post: Post;
@@ -31,16 +31,7 @@ export default function PostCard({ post }: PostCardProps) {
       <div className="flex flex-col gap-3">
         <PostContent content={post.content} />
         {post.media && post.media.length > 0 && (
-          <div className="w-full max-h-100 md:max-h-150 rounded-lg overflow-hidden">
-            <Image
-              src={post.media[0].url}
-              alt="Post Image"
-              width={post.media[0].width}
-              height={post.media[0].height}
-              sizes="100vw"
-              className="w-full h-auto object-cover"
-            />
-          </div>
+          <PostMedia media={post.media} />
         )}
       </div>
 

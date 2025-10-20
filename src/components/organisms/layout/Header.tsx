@@ -1,7 +1,7 @@
 import Logo from "@/components/atoms/Logo";
-import SearchInput from "@/components/molecules/SearchInput";
 import AvatarDropDown from "@/components/atoms/AvatarDropDown";
 import NotificationDropdown from "@/components/organisms/NotificationDropdown";
+import SearchInputDropdown from "@/components/organisms/SearchInputDropdown";
 
 export default function Header() {
   return (
@@ -11,7 +11,7 @@ export default function Header() {
 
         <div className="flex items-center gap-14">
           <div className="max-md:hidden">
-            <SearchInput className="w-[350px]" />
+            <SearchInputDropdown />
           </div>
 
           <div className="flex items-center gap-6">
@@ -23,7 +23,7 @@ export default function Header() {
         </div>
       </div>
       <div className="md:hidden">
-        <SearchInput className="w-full" />
+        <SearchInputDropdown />
       </div>
     </header>
   )
