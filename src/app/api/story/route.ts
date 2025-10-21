@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
       cache: 'no-store',
     });
 
-    return NextResponse.json(response.data);
+    return NextResponse.json(response);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch stories' }, { status: 500 });
   }

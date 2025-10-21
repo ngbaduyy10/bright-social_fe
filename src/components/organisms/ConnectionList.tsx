@@ -8,13 +8,19 @@ import { friendLimit } from '@/utils/constant';
 import UserCardSkeleton from '@/components/atoms/skeleton/UserCardSkeleton';
 import SearchInput from '../molecules/SearchInput';
 
+const ConnectionTypeText: Record<ConnectionType, string> = {
+  [ConnectionType.FRIEND]: 'friends',
+  [ConnectionType.REQUEST]: 'friend requests',
+  [ConnectionType.SENT]: 'sent requests',
+  [ConnectionType.SUGGESTED]: 'suggested friends',
+}
 
 interface ConnectionListProps {
   type: ConnectionType;
 }
 
 export default function ConnectionList({ type }: ConnectionListProps) {
-  const { items: friends, isLoading, isLoadingMore, isReachingEnd, loadMoreRef } = useInfiniteData<Friend>({
+  const { items: friends, totalItems, isLoading, isLoadingMore, isReachingEnd, loadMoreRef } = useInfiniteData<Friend>({
     limit: friendLimit,
     endpoint: `/connection/${type}`,
   });
@@ -29,7 +35,10 @@ export default function ConnectionList({ type }: ConnectionListProps) {
 
   return (
     <div className="space-y-4">
-      <SearchInput className="w-full rounded-lg shadow-sm" classNameInput="bg-white" />
+      <SearchInput className="w-full rounded-lg shadow-sm mb-4" classNameInput="bg-white" />
+      {!isLoading && (
+        <p className="text-md text-gray-500 mb-2">{totalItems} {ConnectionTypeText[type as ConnectionType]}</p>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {friends.map((friend) => (
           <UserCard

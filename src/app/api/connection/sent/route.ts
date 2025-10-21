@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
       }
     );
 
-    return NextResponse.json(response.data);
+    return NextResponse.json(response);
 
   } catch (error) {
     console.error('Failed to fetch sent requests:', error);

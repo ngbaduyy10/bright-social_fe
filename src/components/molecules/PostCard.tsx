@@ -20,7 +20,7 @@ export default function PostCard({ post }: PostCardProps) {
             href={`/profile/${post.user.username}`}
           />
           <div>
-            <Link href={`/${post.user.username}`} className="font-semibold text-foreground">{`${post.user.first_name} ${post.user.last_name}`}</Link>
+            <Link href={`/profile/${post.user.username}`} className="font-semibold text-foreground">{`${post.user.first_name} ${post.user.last_name}`}</Link>
             <p className="text-sm text-muted-foreground">{`@${post.user.username}`} • {getTimeAgo(post.created_at)}</p>
           </div>
         </div>

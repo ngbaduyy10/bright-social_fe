@@ -20,7 +20,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       cache: 'no-store',
     });
 
-    return NextResponse.json(response.data);
+    return NextResponse.json(response);
 
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch user posts' }, { status: 500 });

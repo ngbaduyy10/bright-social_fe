@@ -1,9 +1,20 @@
 import { useEffect, useRef } from 'react';
 import useSWRInfinite from 'swr/infinite';
+import { ApiResponse } from '@/dto/apiResponse.dto';
+import { Meta } from '@/dto/meta.dto';
 
-const fetcher = async <T>(url: string): Promise<T[]> => {
+interface FetcherResponse<T> {
+  data: T;
+  meta?: Meta;
+}
+
+const fetcher = async <T>(url: string): Promise<FetcherResponse<T[]>> => {
   const response = await fetch(url);
-  return response.json();
+  const apiResponse: ApiResponse<T[]> = await response.json();
+  return {
+    data: apiResponse.data,
+    meta: apiResponse.meta,
+  };
 };
 
 interface UseInfiniteDataOptions<T> {
@@ -13,8 +24,8 @@ interface UseInfiniteDataOptions<T> {
 }
 
 export function useInfiniteData<T>({ initialData, limit, endpoint }: UseInfiniteDataOptions<T>) {
-  const getKey = (pageIndex: number, previousPageData: T[]) => {
-    if (previousPageData && previousPageData.length === 0) return null;
+  const getKey = (pageIndex: number, previousPageData: FetcherResponse<T[]>) => {
+    if (previousPageData && previousPageData.data.length === 0) return null;
     return `/api${endpoint}?page=${pageIndex + 1}&limit=${limit}`;
   };
 
@@ -23,15 +34,18 @@ export function useInfiniteData<T>({ initialData, limit, endpoint }: UseInfinite
     isLoading,
     size,
     setSize,
-  } = useSWRInfinite<T[]>(getKey, fetcher, {
-    ...(initialData && initialData.length > 0 && { fallbackData: [initialData] }),
+  } = useSWRInfinite<FetcherResponse<T[]>>(getKey, fetcher, {
+    ...(initialData && initialData.length > 0 && { 
+      fallbackData: [{ data: initialData }] 
+    }),
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     refreshInterval: 0,
   });
 
-  const items = data ? data.flat() : [];
-  const isReachingEnd = data && data[data.length - 1]?.length < limit;
+  const items = data ? data.flatMap(page => page.data) : [];
+  const totalItems = data && data.length > 0 ? data[data.length - 1]?.meta?.total : 0;
+  const isReachingEnd = data && data[data.length - 1]?.data.length < limit;
   const isLoadingMore = isLoading || (size > 0 && !!data && typeof data[size - 1] === 'undefined');
   const loadMore = () => setSize(size + 1);
 
@@ -56,6 +70,7 @@ export function useInfiniteData<T>({ initialData, limit, endpoint }: UseInfinite
 
   return {
     items,
+    totalItems,
     isLoading,
     isLoadingMore,
     isReachingEnd,
