@@ -12,6 +12,7 @@ import {
   UserPlus,
   UserCheck,
   UserSearch,
+  User,
 } from "lucide-react";
 import DefaultAvatar from "@/static/icons/default_avatar.png";
 import { NotificationType } from "@/types";
@@ -102,10 +103,16 @@ export const postLimit = 5;
 export const storyLimit = 8;
 export const mediaLimit = 8;
 export const friendLimit = 12;
+export const userLimit = 12;
 
 export const profileTabs = [
   { id: "posts", label: "Posts" },
   { id: "media", label: "Media" },
+];
+
+export const searchTabs = [
+  { id: "users", label: "Users", icon: User },
+  { id: "posts", label: "Posts", icon: File },
 ];
 
 export const connectionTabs = [

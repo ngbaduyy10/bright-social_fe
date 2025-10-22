@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function UserCardSkeleton() {
+export default function UserCardSkeleton({ isSearch = false }: { isSearch?: boolean }) {
   return (
     <div className="bg-white rounded-lg p-3 w-full">
       <div className="flex items-start gap-4">
@@ -13,10 +13,12 @@ export default function UserCardSkeleton() {
         </div>
       </div>
       
-      <div className="flex gap-2 mt-4">
-        <Skeleton className="h-10 w-full" />
-        <Skeleton className="h-10 w-full" />
-      </div>
+      {!isSearch && (
+        <div className="flex gap-2 mt-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+      )}
     </div>
   );
 }

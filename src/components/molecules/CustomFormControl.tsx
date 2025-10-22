@@ -52,6 +52,7 @@ export default function CustomFormControl<T extends FieldValues>({
                   ${Icon && 'pl-10'}
                   ${fieldState.error && 'border-red-500 focus:ring-red-500 focus:border-red-500'}
                 `}
+                autoComplete="off"
               />
             </motion.div>
           </FormControl>

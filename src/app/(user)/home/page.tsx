@@ -16,7 +16,7 @@ export default async function HomePage() {
   return (
     <>
       <StoryList initialUserStories={initialUserStories} />
-      <PostList initialPosts={initialPosts} />
+      <PostList initialPosts={initialPosts} endpoint="/friend" />
     </>
   );
 }

@@ -9,13 +9,15 @@ import { postLimit } from "@/utils/constant";
 interface PostListProps {
   initialPosts: Post[];
   endpoint?: string;
+  params?: Record<string, string>;
 }
 
-export default function PostList({ initialPosts, endpoint }: PostListProps) {
+export default function PostList({ initialPosts, endpoint, params }: PostListProps) {
   const { items: posts, isLoadingMore, isReachingEnd, loadMoreRef } = useInfiniteData<Post>({
     initialData: initialPosts,
     limit: postLimit,
-    endpoint: endpoint ? `/post${endpoint}` : '/post'
+    endpoint: endpoint ? `/post${endpoint}` : '/post',
+    params: params
   });
 
   if (!posts || posts.length === 0) {

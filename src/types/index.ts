@@ -35,3 +35,9 @@ export enum FriendStatus {
   ACCEPTED = 'accepted',
   REJECTED = 'rejected',
 }
+
+export interface Filter {
+  keyword?: string;
+  page: number;
+  limit: number;
+}

@@ -7,17 +7,35 @@ import { ApiResponse } from '@/dto/apiResponse.dto';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const pageNum = Number.parseInt(searchParams.get('page') ?? '1', 10);
-    const limitNum = Number.parseInt(searchParams.get('limit') ?? postLimit.toString(), 10);
+    
+    const params = new URLSearchParams();
+    const keyword = searchParams.get('keyword');
+    const page = searchParams.get('page') || '1';
+    const limit = searchParams.get('limit') || postLimit.toString();
+    
+    if (keyword) params.append('keyword', keyword);
+    params.append('page', page);
+    params.append('limit', limit);
 
-    const response: ApiResponse<Post[]> = await fetchApiWithAuth(`/post?page=${pageNum}&limit=${limitNum}`, {
-      method: 'GET',
-      cache: 'no-store',
-    });
+    const response: ApiResponse<Post[]> = await fetchApiWithAuth(
+      `/post?${params.toString()}`,
+      {
+        method: 'GET',
+        cache: 'no-store',
+      }
+    );
 
     return NextResponse.json(response);
 
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 });
+    console.error('Error fetching posts:', error);
+    return NextResponse.json(
+      { 
+        success: false,
+        error: 'Failed to fetch posts',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      }, 
+      { status: 500 }
+    );
   }
 }

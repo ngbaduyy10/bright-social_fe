@@ -21,12 +21,13 @@ interface UseInfiniteDataOptions<T> {
   initialData?: T[];
   limit: number;
   endpoint: string;
+  params?: Record<string, string>;
 }
 
-export function useInfiniteData<T>({ initialData, limit, endpoint }: UseInfiniteDataOptions<T>) {
+export function useInfiniteData<T>({ initialData, limit, endpoint, params }: UseInfiniteDataOptions<T>) {
   const getKey = (pageIndex: number, previousPageData: FetcherResponse<T[]>) => {
     if (previousPageData && previousPageData.data.length === 0) return null;
-    return `/api${endpoint}?page=${pageIndex + 1}&limit=${limit}`;
+    return `/api${endpoint}?page=${pageIndex + 1}&limit=${limit}${params ? `&${new URLSearchParams(params).toString()}` : ''}`;
   };
 
   const {
