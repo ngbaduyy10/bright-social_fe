@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import LeftSidebar from "@/components/organisms/layout/LeftSidebar";
+import LeftSidebarWrapper from "@/components/organisms/layout/LeftSidebarWrapper";
 import RightSidebar from "@/components/organisms/layout/RightSidebar";
 import Header from "@/components/organisms/layout/Header";
 import { SessionProvider } from "next-auth/react"
@@ -13,11 +13,11 @@ export default function UserLayout({ children }: { children: ReactNode }) {
         </div>
         <div className="flex flex-1 pt-[116px] md:pt-[68px]">
           <div className="w-80 fixed top-[68px] left-0 h-[calc(100vh-68px)] max-xl:hidden bg-background z-20">
-            <LeftSidebar />
+            <LeftSidebarWrapper />
           </div>
           
           <div className="flex-1 min-w-0 mx-0 lg:mr-80 xl:mx-80 h-[calc(100vh-116px)] md:h-[calc(100vh-68px)]">
-            <main className="h-full py-4 md:py-6 pl-2 pr-1 bg-background overflow-y-auto main-scrollbar">
+            <main className="h-full py-2 md:py-4 pl-2 pr-1 bg-background overflow-y-auto main-scrollbar">
               {children}
             </main>
           </div>

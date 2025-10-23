@@ -43,7 +43,7 @@ export default function SearchTabs({ initialData }: SearchTabsProps) {
         )}
       </TabsContent>
       
-      <TabsContent value={searchTabs[1].id} className="mt-2">
+      <TabsContent value={searchTabs[1].id} className="mt-2 w-full">
         {posts.length > 0 ? (
           <PostList initialPosts={posts} params={{ keyword: keyword ?? '' }} />
         ) : (

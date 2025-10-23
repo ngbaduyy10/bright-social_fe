@@ -5,9 +5,9 @@ import { fetchApiWithAuth } from "@/utils/api";
 import { postLimit, userLimit } from "@/utils/constant";
 
 interface SearchPageProps {
-  searchParams: {
-    keyword: Promise<string>;
-  };
+  searchParams: Promise<{
+    keyword: string;
+  }>;
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {

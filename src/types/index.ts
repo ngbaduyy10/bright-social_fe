@@ -41,3 +41,10 @@ export interface Filter {
   page: number;
   limit: number;
 }
+
+export interface Message {
+  id: string;
+  text: string;
+  isFromUser: boolean;
+  created_at: string;
+}
