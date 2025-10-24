@@ -34,7 +34,7 @@ export default function CommonButton({
 
   return (
     <motion.button
-      whileHover={{ scale: 1.03 }}
+      whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 1 }}
       transition={{ type: "spring", stiffness: 400, damping: 20 }}
       className={cn(

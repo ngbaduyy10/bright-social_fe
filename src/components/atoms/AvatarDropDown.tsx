@@ -42,14 +42,8 @@ export default function AvatarDropDown() {
       <DropdownMenuContent align="end" className="w-56 border-gray-200">
         <div className="flex items-center justify-start gap-2 px-2 py-1">
           <div className="flex flex-col">
-            {user?.name && (
-              <p className="font-sm truncate">{user.name}</p>
-            )}
-            {user?.email && (
-              <p className="truncate text-sm text-muted-foreground">
-                {user.email}
-              </p>
-            )}
+            <p className="font-sm truncate">{user?.first_name} {user?.last_name}</p>
+            <p className="truncate text-sm text-muted-foreground">@{user?.name}</p>
           </div>
         </div>
         <DropdownMenuSeparator />

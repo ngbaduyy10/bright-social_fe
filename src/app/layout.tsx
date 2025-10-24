@@ -12,9 +12,9 @@ export const metadata: Metadata = {
   title: "Bright",
   description: "Social Media Platform",
   icons: {
-    icon: "/src/static/icons/favicon.svg",
-    shortcut: "/src/static/icons/favicon.svg",
-    apple: "/src/static/icons/favicon.svg",
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
   },
 };
 

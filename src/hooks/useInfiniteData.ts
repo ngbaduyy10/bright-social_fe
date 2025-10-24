@@ -38,10 +38,7 @@ export function useInfiniteData<T>({ initialData, limit, endpoint, params }: Use
   } = useSWRInfinite<FetcherResponse<T[]>>(getKey, fetcher, {
     ...(initialData && initialData.length > 0 && { 
       fallbackData: [{ data: initialData }] 
-    }),
-    revalidateOnFocus: false,
-    revalidateOnReconnect: true,
-    refreshInterval: 0,
+    })
   });
 
   const items = data ? data.flatMap(page => page.data) : [];
