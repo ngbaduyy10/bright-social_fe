@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import { notificationIcons, notificationColors } from "@/utils/constant";
 import { NotificationType } from "@/types";
+import { useRouter } from "next/navigation";
 
 const getNotificationMessage = (type: NotificationType): string => {
   switch (type) {
@@ -36,11 +39,16 @@ export default function NotificationCard({
   notification,
   isPage = false,
 }: NotificationCardProps) {
+  const router = useRouter();
   const IconComponent = notificationIcons[notification.type];
   const bgColor = notificationColors[notification.type];
 
+  const handleClick = () => {
+    router.push(`/post/9f372a16-00ea-4418-896a-f9c5a07f31c3`);
+  };
+
   return (
-    <div className={`bg-white rounded-lg flex items-center gap-3 hover:bg-gray-100 transition-colors ${isPage ? "p-4" : "px-2 py-3"}`}>
+    <div className={`bg-white rounded-lg flex items-center gap-3 hover:bg-gray-100 transition-colors cursor-pointer ${isPage ? "p-4" : "px-2 py-3"}`} onClick={handleClick}>
       <div className="relative flex-shrink-0">
         <div className={`rounded-full bg-white flex-center overflow-hidden relative ${isPage ? "w-12 h-12" : "w-10 h-10"}`}>
           <Image

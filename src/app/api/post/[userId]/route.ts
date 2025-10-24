@@ -15,7 +15,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const pageNum = Number.parseInt(searchParams.get('page') ?? '1', 10);
     const limitNum = Number.parseInt(searchParams.get('limit') ?? postLimit.toString(), 10);
 
-    const response: ApiResponse<Post[]> = await fetchApiWithAuth(`/post/${userId}?page=${pageNum}&limit=${limitNum}`, {
+    const response: ApiResponse<Post[]> = await fetchApiWithAuth(`/post/user/${userId}?page=${pageNum}&limit=${limitNum}`, {
       method: 'GET',
       cache: 'no-store',
     });
