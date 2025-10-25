@@ -25,7 +25,9 @@ export default function PostCard({ post }: PostCardProps) {
           </div>
         </div>
 
-        <MoreHorizontal size={20} />
+        <div className="flex-center bg-white hover:bg-background rounded-md p-1 cursor-pointer">
+          <MoreHorizontal size={20} />
+        </div>
       </div>
 
       <div className="flex flex-col gap-3">
@@ -36,16 +38,16 @@ export default function PostCard({ post }: PostCardProps) {
       </div>
 
       <div className="flex items-center gap-6 pt-3 border-t border-border">
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <Heart size={20} />
+        <div className="flex items-center gap-1 text-muted-foreground">
+          <Heart size={22} className="cursor-pointer" />
           <span>10</span>
         </div>
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <MessageCircle size={20} />
+        <div className="flex items-center gap-1 text-muted-foreground">
+          <MessageCircle size={22} className="cursor-pointer" />
           <span>10</span>
         </div>
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <Share2 size={20} />
+        <div className="flex items-center gap-1 text-muted-foreground cursor-pointer">
+          <Share2 size={22} />
           <span>Share</span>
         </div>
       </div>

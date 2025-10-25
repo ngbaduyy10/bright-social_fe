@@ -31,7 +31,7 @@ export default function AvatarDropDown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild> 
-        <Button className="w-10 h-10 p-0 rounded-full bg-white hover:bg-white overflow-hidden">
+        <Button className="w-10 h-10 p-0 rounded-full bg-white hover:bg-white overflow-hidden focus-visible:ring-0">
           <Image 
             src={user?.image || DefaultAvatar} 
             alt={user?.name || "User Avatar"} 

@@ -33,11 +33,13 @@ interface NotificationCardProps {
     content?: string;
   };
   isPage?: boolean;
+  setOpen?: (open: boolean) => void;
 }
 
 export default function NotificationCard({ 
   notification,
   isPage = false,
+  setOpen,
 }: NotificationCardProps) {
   const router = useRouter();
   const IconComponent = notificationIcons[notification.type];
@@ -45,6 +47,7 @@ export default function NotificationCard({
 
   const handleClick = () => {
     router.push(`/post/9f372a16-00ea-4418-896a-f9c5a07f31c3`);
+    setOpen?.(false);
   };
 
   return (

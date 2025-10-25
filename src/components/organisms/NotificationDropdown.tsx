@@ -42,6 +42,7 @@ export default function NotificationDropdown() {
               <NotificationCard
                 key={notification.id}
                 notification={notification}
+                setOpen={setOpen}
               />
             ))
           ) : (
