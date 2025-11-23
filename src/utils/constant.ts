@@ -427,3 +427,18 @@ export const sampleMessages = [
     created_at: "2024-04-17T10:07:17Z"
   }
 ];
+
+export const storyColors = [
+  { name: "red", value: "#ef4444" },
+  { name: "orange", value: "#f97316" },
+  { name: "yellow", value: "#facc15" },
+  { name: "green", value: "#22c55e" },
+  { name: "teal", value: "#14b8a6" },
+  { name: "blue", value: "#3b82f6" },
+  { name: "purple", value: "#a855f7" },
+  { name: "pink", value: "#ec4899" },
+  { name: "brown", value: "#92400e" },
+  { name: "gray", value: "#6b7280" },
+  { name: "black", value: "#000000" },
+  { name: "white", value: "#ffffff" },
+];

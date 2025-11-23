@@ -8,7 +8,7 @@ export default function LeftSidebar() {
       <div className="px-4 py-6 bg-white rounded-lg shadow-sm">
         <NavItems />
 
-        <CommonButton className="w-full px-4 py-6 gap-2">
+        <CommonButton href="/post/create" className="w-full px-4 py-6 gap-2">
           <Plus size={20} className="stroke-[3]" />
           <span className="font-semibold text-[16px]">Create Post</span>
         </CommonButton>
