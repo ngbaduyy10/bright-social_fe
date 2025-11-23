@@ -15,6 +15,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
   return (
     <div className="max-w-2xl mx-auto">
+      <h1 className="mb-4 text-[34px] font-bold">Your Post</h1>
       <PostCard post={post} />
     </div>
   );
