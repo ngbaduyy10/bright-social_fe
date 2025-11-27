@@ -3,14 +3,15 @@ import Media from "@/models/media";
 
 interface PostMediaProps {
   media: Media[];
+  handleSelectMedia: (media: Media) => void;
 }
 
-export default function PostMedia({ media }: PostMediaProps) {
+export default function PostMedia({ media, handleSelectMedia }: PostMediaProps) {
   const mediaCount = media.length;
 
   if (mediaCount === 1) {
     return (
-      <div className="w-full max-h-[500px] rounded-lg overflow-hidden">
+      <div className="w-full max-h-[500px] rounded-lg overflow-hidden cursor-pointer" onClick={() => handleSelectMedia(media[0])}>
         <Image
           src={media[0].url}
           alt="Post Image"
@@ -27,7 +28,7 @@ export default function PostMedia({ media }: PostMediaProps) {
     return (
       <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden max-h-[400px]">
         {media.map((item, index) => (
-          <div key={index} className="relative h-full min-h-[200px]">
+          <div key={index} className="relative h-full min-h-[200px] cursor-pointer" onClick={() => handleSelectMedia(item)}>
             <Image
               src={item.url}
               alt={`Post Image ${index + 1}`}
@@ -44,7 +45,7 @@ export default function PostMedia({ media }: PostMediaProps) {
   if (mediaCount === 3) {
     return (
       <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden max-h-[400px]">
-        <div className="relative row-span-2 min-h-[400px]">
+        <div className="relative row-span-2 min-h-[400px] cursor-pointer" onClick={() => handleSelectMedia(media[0])}>
           <Image
             src={media[0].url}
             alt="Post Image 1"
@@ -53,7 +54,7 @@ export default function PostMedia({ media }: PostMediaProps) {
             className="object-cover"
           />
         </div>
-        <div className="relative min-h-[199px]">
+        <div className="relative min-h-[199px] cursor-pointer" onClick={() => handleSelectMedia(media[1])}>
           <Image
             src={media[1].url}
             alt="Post Image 2"
@@ -62,7 +63,7 @@ export default function PostMedia({ media }: PostMediaProps) {
             className="object-cover"
           />
         </div>
-        <div className="relative min-h-[199px]">
+        <div className="relative min-h-[199px] cursor-pointer" onClick={() => handleSelectMedia(media[2])}>
           <Image
             src={media[2].url}
             alt="Post Image 3"
@@ -79,7 +80,7 @@ export default function PostMedia({ media }: PostMediaProps) {
     return (
       <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden max-h-[400px]">
         {media.map((item, index) => (
-          <div key={index} className="relative min-h-[199px]">
+          <div key={index} className="relative min-h-[199px] cursor-pointer" onClick={() => handleSelectMedia(item)}>
             <Image
               src={item.url}
               alt={`Post Image ${index + 1}`}
@@ -98,7 +99,7 @@ export default function PostMedia({ media }: PostMediaProps) {
       <div className="rounded-lg overflow-hidden flex flex-col gap-1 max-h-[500px]">
         <div className="grid grid-cols-2 gap-1">
           {media.slice(0, 2).map((item, index) => (
-            <div key={index} className="relative min-h-[220px]">
+            <div key={index} className="relative min-h-[220px] cursor-pointer" onClick={() => handleSelectMedia(item)}>
               <Image
                 src={item.url}
                 alt={`Post Image ${index + 1}`}
@@ -111,7 +112,7 @@ export default function PostMedia({ media }: PostMediaProps) {
         </div>
         <div className="grid grid-cols-3 gap-1">
           {media.slice(2, 5).map((item, index) => (
-            <div key={index} className="relative min-h-[180px]">
+            <div key={index} className="relative min-h-[180px] cursor-pointer" onClick={() => handleSelectMedia(item)}>
               <Image
                 src={item.url}
                 alt={`Post Image ${index + 3}`}
@@ -131,7 +132,7 @@ export default function PostMedia({ media }: PostMediaProps) {
     <div className="rounded-lg overflow-hidden flex flex-col gap-1 max-h-[500px]">
       <div className="grid grid-cols-2 gap-1">
         {media.slice(0, 2).map((item, index) => (
-          <div key={index} className="relative min-h-[220px]">
+          <div key={index} className="relative min-h-[220px] cursor-pointer" onClick={() => handleSelectMedia(item)}>
             <Image
               src={item.url}
               alt={`Post Image ${index + 1}`}
@@ -144,7 +145,7 @@ export default function PostMedia({ media }: PostMediaProps) {
       </div>
       <div className="grid grid-cols-3 gap-1">
         {media.slice(2, 4).map((item, index) => (
-          <div key={index} className="relative min-h-[180px]">
+          <div key={index} className="relative min-h-[180px] cursor-pointer" onClick={() => handleSelectMedia(item)}>
             <Image
               src={item.url}
               alt={`Post Image ${index + 3}`}
@@ -154,7 +155,7 @@ export default function PostMedia({ media }: PostMediaProps) {
             />
           </div>
         ))}
-        <div className="relative min-h-[180px]">
+        <div className="relative min-h-[180px] cursor-pointer" onClick={() => handleSelectMedia(media[4])}>
           <Image
             src={media[4].url}
             alt="Post Image 5"
