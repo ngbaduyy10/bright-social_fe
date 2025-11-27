@@ -19,7 +19,7 @@ export default function StoryList({ initialUserStories }: StoryListProps) {
   });
 
   return (
-    <div className="flex items-center gap-2 mb-6 overflow-x-auto scrollbar-hide">
+    <div className="flex items-center gap-2 mb-6 py-1 overflow-x-auto scrollbar-hide">
       <CreateStoryCard />
       {userStories.map((userStory: UserStory) => (
         <StoryCard key={userStory.user.id} userStory={userStory} />
