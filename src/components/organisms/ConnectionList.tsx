@@ -38,7 +38,7 @@ export default function ConnectionList({ type }: ConnectionListProps) {
 
   return (
     <div className="space-y-4">
-      <SearchInput className="w-full rounded-lg shadow-sm mb-4" classNameInput="bg-white" />
+      <SearchInput className="w-full rounded-lg shadow-sm mb-4" classNameInput="bg-white" isLarge={true} />
       {!isLoading && (
         <p className="text-md text-gray-500 mb-2">{totalItems} {ConnectionTypeText[type as ConnectionType]}</p>
       )}

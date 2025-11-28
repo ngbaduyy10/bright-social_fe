@@ -1,8 +1,9 @@
 import Image from "next/image";
-import { UserPlus, MessageCircle, UserPen } from "lucide-react";
+import { UserPlus, MessageCircle, UserPen, UserCheck, X, Check } from "lucide-react";
 import User from "@/models/user";
 import DefaultAvatar from "@/static/icons/default_avatar.png";
 import CommonButton from "@/components/atoms/CommonButton";
+import { ConnectionType } from "@/types";
 
 interface ProfileHeaderProps {
   user: User;
@@ -13,6 +14,45 @@ export default function ProfileHeader({ user, isUser }: ProfileHeaderProps) {
   const fullName = user.first_name && user.last_name 
     ? `${user.first_name} ${user.last_name}` 
     : user.username;
+
+  const connectionButton = () => {
+    switch (user.connection_type) {
+      case ConnectionType.FRIEND:
+        return (
+          <CommonButton className="gap-2 px-6">
+            <UserCheck className="w-4 h-4" />
+            Friend
+          </CommonButton>
+        )
+      case ConnectionType.REQUEST:
+        return (
+          <>
+            <CommonButton className="gap-2">
+              <Check className="w-4 h-4" />
+              Accept
+            </CommonButton>
+            <CommonButton className="gap-2 bg-secondary text-black">
+              <X className="w-4 h-4" />
+              Cancel
+            </CommonButton>
+          </>
+        )
+      case ConnectionType.SENT:
+        return (
+          <CommonButton className="gap-2">
+            <X className="w-4 h-4" />
+            Cancel request
+          </CommonButton>
+        )
+      default:
+        return (
+          <CommonButton className="gap-2">
+            <UserPlus className="w-4 h-4" />
+            Add friend
+          </CommonButton>
+        )
+    }
+  }
 
   return (
     <div className="bg-white shadow-sm rounded-lg overflow-hidden">
@@ -44,9 +84,9 @@ export default function ProfileHeader({ user, isUser }: ProfileHeaderProps) {
             <h1 className="text-3xl font-bold">{fullName}</h1>
             <p className="text-gray-500">@{user.username}</p>
             {isUser ? (
-              <p className="text-gray-500 mt-2">20 friends</p>
+              <p className="text-gray-500 mt-2">{user.total_friends} friends</p>
             ) : (
-              <p className="text-gray-500 mt-2">15 mutual friends</p>
+              <p className="text-gray-500 mt-2">{user.mutual} mutual friends</p>
             )}
           </div>
           
@@ -58,10 +98,7 @@ export default function ProfileHeader({ user, isUser }: ProfileHeaderProps) {
               </CommonButton>
             ) : (
               <>
-                <CommonButton className="gap-2">
-                  <UserPlus className="w-4 h-4" />
-                  Add friend
-                </CommonButton>
+                {connectionButton()}
                 
                 <CommonButton className="gap-2 bg-background text-black hover:bg-gray-200">
                   <MessageCircle className="w-4 h-4" />

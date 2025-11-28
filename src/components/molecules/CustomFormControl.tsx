@@ -12,6 +12,7 @@ interface CustomFormControlProps<T extends FieldValues> {
   className?: string;
   classNameInput?: string;
   icon?: React.ElementType;
+  isLarge?: boolean;
 };
 
 export default function CustomFormControl<T extends FieldValues>({
@@ -23,6 +24,7 @@ export default function CustomFormControl<T extends FieldValues>({
   className,
   classNameInput,
   icon: Icon,
+  isLarge = false,
 }: CustomFormControlProps<T>) {
   return (
     <FormField
@@ -33,9 +35,9 @@ export default function CustomFormControl<T extends FieldValues>({
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
             <motion.div
-              whileHover={{ scale: 1.01 }}
+              whileHover={{ scale: isLarge ? 1.005 : 1.02 }}
               whileTap={{ scale: 1 }}
-              transition={{ duration: 0.2, ease: "easeInOut" }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
               className="relative"
             >
               {Icon && (

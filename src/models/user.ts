@@ -1,5 +1,5 @@
 import Base from "./base";
-import { Gender } from "@/types";
+import { ConnectionType, Gender } from "@/types";
 import Post from "./post";
 import Media from "./media";
 
@@ -17,4 +17,6 @@ export default interface User extends Base {
   posts?: Post[];
   media?: Media[];
   mutual?: number;
+  total_friends?: number;
+  connection_type?: ConnectionType;
 }

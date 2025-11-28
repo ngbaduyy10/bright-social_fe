@@ -18,9 +18,10 @@ interface SearchInputProps {
   onChange?: (keyword: string) => void;
   clearKeyword?: boolean;
   setClearKeyword?: (clear: boolean) => void;
+  isLarge?: boolean;
 }
 
-export default function SearchInput({ className, classNameInput, onSubmit, onChange, clearKeyword, setClearKeyword }: SearchInputProps) {
+export default function SearchInput({ className, classNameInput, onSubmit, onChange, clearKeyword, setClearKeyword, isLarge = false }: SearchInputProps) {
   const form = useForm<SearchFormData>({
     defaultValues: {
       keyword: "",
@@ -57,6 +58,7 @@ export default function SearchInput({ className, classNameInput, onSubmit, onCha
           placeholder="Search"
           icon={Search}
           classNameInput={classNameInput}
+          isLarge={isLarge}
         />
       </form>
     </Form>
