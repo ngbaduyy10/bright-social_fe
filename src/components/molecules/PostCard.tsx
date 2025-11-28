@@ -59,7 +59,7 @@ export default function PostCard({ post }: PostCardProps) {
         const newParams = params.toString();
         router.push(newParams ? `?${newParams}` : window.location.pathname, { scroll: false });
         setSelectedPost(null);
-      }, 50);
+      }, 100);
     }
   }
 

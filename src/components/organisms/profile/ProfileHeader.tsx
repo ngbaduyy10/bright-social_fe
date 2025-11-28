@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { UserPlus, MessageCircle, UserCheck, UserPen } from "lucide-react";
+import { UserPlus, MessageCircle, UserPen } from "lucide-react";
 import User from "@/models/user";
 import DefaultAvatar from "@/static/icons/default_avatar.png";
 import CommonButton from "@/components/atoms/CommonButton";
@@ -43,7 +43,11 @@ export default function ProfileHeader({ user, isUser }: ProfileHeaderProps) {
           <div>
             <h1 className="text-3xl font-bold">{fullName}</h1>
             <p className="text-gray-500">@{user.username}</p>
-            <p className="text-gray-500 mt-2">20 friends</p>
+            {isUser ? (
+              <p className="text-gray-500 mt-2">20 friends</p>
+            ) : (
+              <p className="text-gray-500 mt-2">15 mutual friends</p>
+            )}
           </div>
           
           <div className="flex-center flex-wrap gap-2">

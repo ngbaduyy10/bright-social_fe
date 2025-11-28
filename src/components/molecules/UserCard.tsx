@@ -5,23 +5,36 @@ import { MessageCircle, Check, X, UserPlus } from "lucide-react";
 import CommonButton from "../atoms/CommonButton";
 import { ConnectionType } from "@/types";
 import Friend from "@/models/friend";
+import User from "@/models/user";
 import { getTimeAgo } from "@/utils/helpers";
+import { useRouter } from "next/navigation";
 
 interface UserCardProps {
-  friend: Friend;
+  friend?: Friend;
+  user?: User;
   type?: ConnectionType;
 }
 
-export default function UserCard({ friend, type }: UserCardProps) {
-  const user = type === ConnectionType.REQUEST ? friend.user : friend.friend;
-  const fullName = `${user.first_name} ${user.last_name}`;
+export default function UserCard({ friend, user: userProp, type }: UserCardProps) {
+  const router = useRouter();
+
+  let user: User;
+  if (userProp) {
+    user = userProp;
+  } else if (friend) {
+    user = type === ConnectionType.REQUEST ? friend.user : friend.friend;
+  } else {
+    throw new Error('Either friend or user must be provided');
+  }
+  
+  const fullName = `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.username;
 
   const renderActions = () => {
     switch (type) {
       case ConnectionType.FRIEND:
         return (
           <>
-            <CommonButton className="w-full">
+            <CommonButton href={`/profile/${user.username}`} className="w-full">
               View Profile
             </CommonButton>
             <CommonButton className="w-full bg-secondary text-black">
@@ -48,7 +61,7 @@ export default function UserCard({ friend, type }: UserCardProps) {
       case ConnectionType.SENT:
         return (
           <>
-            <CommonButton className="w-full">
+            <CommonButton href={`/profile/${user.username}`} className="w-full">
               View Profile
             </CommonButton>
             <CommonButton className="w-full bg-secondary text-black">
@@ -61,7 +74,7 @@ export default function UserCard({ friend, type }: UserCardProps) {
       case ConnectionType.SUGGESTED:
         return (
           <>
-            <CommonButton className="w-full">
+            <CommonButton href={`/profile/${user.username}`} className="w-full">
               View Profile
             </CommonButton>
             <CommonButton className="w-full bg-secondary text-black">
@@ -82,14 +95,15 @@ export default function UserCard({ friend, type }: UserCardProps) {
         <UserAvatar 
           image={user.image}
           className="w-15 h-15 flex-shrink-0"
+          href={`/profile/${user.username}`}
         />
         
         <div className="flex-1 min-w-0">
           <div className="flex-between gap-2">
-            <p className="font-bold text-md truncate">
+            <p className="font-bold text-md truncate cursor-pointer" onClick={() => router.push(`/profile/${user.username}`)}>
               {fullName}
             </p>
-            {(type === ConnectionType.REQUEST || type === ConnectionType.SENT) && (
+            {(type === ConnectionType.REQUEST || type === ConnectionType.SENT) && friend && (
               <p className="text-sm text-muted-foreground">
                 {getTimeAgo(friend.created_at)}
               </p>
@@ -99,7 +113,7 @@ export default function UserCard({ friend, type }: UserCardProps) {
             @{user.username}
           </p>
           <p className="text-sm text-muted-foreground">
-            10 mutual friends
+            {friend ? friend.mutual : user.mutual} mutual friends
           </p>
         </div>
       </div>

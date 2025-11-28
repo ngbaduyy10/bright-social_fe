@@ -6,4 +6,5 @@ export default interface Friend extends Base {
   user: User;
   friend: User;
   status: FriendStatus;
+  mutual: number;
 }

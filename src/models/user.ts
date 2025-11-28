@@ -16,4 +16,5 @@ export default interface User extends Base {
   is_verified?: boolean;
   posts?: Post[];
   media?: Media[];
+  mutual?: number;
 }

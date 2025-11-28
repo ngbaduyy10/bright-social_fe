@@ -5,6 +5,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { connectionTabs } from '@/utils/constant';
 import { ConnectionType } from '@/types';
 import ConnectionList from '@/components/organisms/ConnectionList';
+import PageTitle from '@/components/atoms/PageTitle';
 
 export default function ConnectionPage() {
   const [activeTab, setActiveTab] = useState<string>(connectionTabs[0].id);
@@ -15,7 +16,7 @@ export default function ConnectionPage() {
 
   return (
     <div className="">
-      <h1 className="mb-4 text-[34px] font-bold">Connections</h1>
+      <PageTitle title="Connections" description="View your connections" />
 
       <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
         <TabsList className="grid grid-cols-4 w-full mb-4 bg-white shadow-sm">
@@ -33,13 +34,7 @@ export default function ConnectionPage() {
 
         {connectionTabs.map((tab) => (
           <TabsContent key={tab.id} value={tab.id}>
-            {tab.id === ConnectionType.SUGGESTED ? (
-              <div className="flex-center py-12 text-gray-500">
-                Find new connections to add to your network.
-              </div>
-            ) : (
-              <ConnectionList type={tab.id as ConnectionType} />
-            )}
+            <ConnectionList type={tab.id as ConnectionType} />
           </TabsContent>
         ))}
       </Tabs>
