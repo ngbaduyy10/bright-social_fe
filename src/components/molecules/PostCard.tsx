@@ -4,26 +4,63 @@ import { MoreHorizontal } from "lucide-react";
 import Post from "@/models/post";
 import PostContent from "@/components/atoms/PostContent";
 import PostMedia from "./PostMedia";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PostModal from "../organisms/PostModal";
 import Media from "@/models/media";
 import UserInfo from "../atoms/UserInfo";
 import PostInteractionBar from "../atoms/PostInteractionBar";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface PostCardProps {
   post: Post;
 }
 
 export default function PostCard({ post }: PostCardProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [selectedMediaOrder, setSelectedMediaOrder] = useState<number>(0);
   const [open, setOpen] = useState(false);
   const sortedMedia = post.media?.sort((a, b) => a.order - b.order);
 
+  useEffect(() => {
+    const postId = searchParams.get("postId");
+    const mediaOrder = searchParams.get("mediaOrder");
+    
+    if (postId && postId === post.id.toString()) {
+      setSelectedPost(post);
+      setSelectedMediaOrder(mediaOrder ? parseInt(mediaOrder) : 0);
+      setOpen(true);
+    } else {
+      setOpen(false);
+      setSelectedPost(null);
+    }
+  }, [searchParams, post]);
+
   const handleSelectMedia = (media: Media) => {
     setSelectedPost(post);
     setSelectedMediaOrder(media.order);
     setOpen(true);
+    
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("postId", post.id.toString());
+    params.set("mediaOrder", media.order.toString());
+    router.push(`?${params.toString()}`, { scroll: false });
+  }
+
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen);
+    
+    if (!isOpen) {
+      setTimeout(() => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete("postId");
+        params.delete("mediaOrder");
+        const newParams = params.toString();
+        router.push(newParams ? `?${newParams}` : window.location.pathname, { scroll: false });
+        setSelectedPost(null);
+      }, 50);
+    }
   }
 
   return (
@@ -55,7 +92,7 @@ export default function PostCard({ post }: PostCardProps) {
           post={selectedPost} 
           mediaOrder={selectedMediaOrder} 
           open={open} 
-          onOpenChange={setOpen} 
+          onOpenChange={handleOpenChange} 
         />
       )}
     </>
