@@ -18,9 +18,8 @@ import { UserStory } from "@/dto/userStory.dto";
 import { StoryType } from "@/types";
 import Image from "next/image";
 import { useCarousel } from "@/components/ui/carousel";
-import UserAvatar from "@/components/atoms/UserAvatar";
-import { getTimeAgo } from "@/utils/helpers";
 import { X } from "lucide-react";
+import UserInfo from "../atoms/UserInfo";
 
 interface StoryModalProps {
   userStory: UserStory;
@@ -65,7 +64,6 @@ export default function StoryModal({ userStory, open, onOpenChange }: StoryModal
   }
 
   const currentStory = stories[current] || stories[0];
-  const userName = `${user.first_name || ""} ${user.last_name || ""}`.trim() || user.username;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -76,18 +74,8 @@ export default function StoryModal({ userStory, open, onOpenChange }: StoryModal
         <DialogTitle className="sr-only">Story Viewer</DialogTitle>
         <div className="relative w-full h-full [&_[data-slot='carousel-content']]:h-full">
           <div className="absolute top-6 left-0 right-0 z-20 px-4 flex items-start justify-between">
-            <div className="flex items-center gap-3">
-              <UserAvatar 
-                image={user.image}
-                className="w-10 h-10 border-2 border-primary"
-              />
-              <div className="text-white">
-                <p className="font-semibold text-sm">{userName}</p>
-                <p className="text-xs text-white/80">
-                  @{user.username} • {getTimeAgo(currentStory.created_at)}
-                </p>
-              </div>
-            </div>
+            <UserInfo user={user} createdAt={currentStory.created_at} />
+
             <div
               onClick={() => onOpenChange(false)}
               className="w-8 h-8 rounded-full bg-secondary/80 hover:bg-secondary flex-center text-white transition-colors cursor-pointer"

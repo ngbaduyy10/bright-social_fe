@@ -1,15 +1,14 @@
 "use client";
 
-import UserAvatar from "@/components/atoms/UserAvatar";
-import { Bookmark, Heart, MessageCircle, MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import Post from "@/models/post";
-import { getTimeAgo } from "@/utils/helpers";
 import PostContent from "@/components/atoms/PostContent";
-import Link from "next/link";
 import PostMedia from "./PostMedia";
 import { useState } from "react";
 import PostModal from "../organisms/PostModal";
 import Media from "@/models/media";
+import UserInfo from "../atoms/UserInfo";
+import PostInteractionBar from "../atoms/PostInteractionBar";
 
 interface PostCardProps {
   post: Post;
@@ -31,16 +30,7 @@ export default function PostCard({ post }: PostCardProps) {
     <>
       <div className="bg-white flex flex-col gap-4 shadow-sm rounded-lg p-6">
         <div className="flex items-start justify-between">
-          <div className="flex items-center space-x-2" >
-            <UserAvatar 
-              image={post.user.image}
-              href={`/profile/${post.user.username}`}
-            />
-            <div>
-              <Link href={`/profile/${post.user.username}`} className="font-semibold text-foreground">{`${post.user.first_name} ${post.user.last_name}`}</Link>
-              <p className="text-sm text-muted-foreground">{`@${post.user.username}`} • {getTimeAgo(post.created_at)}</p>
-            </div>
-          </div>
+          <UserInfo user={post.user} createdAt={post.created_at} />
 
           <div className="flex-center bg-white hover:bg-background rounded-md p-1 cursor-pointer">
             <MoreHorizontal size={20} />
@@ -57,21 +47,7 @@ export default function PostCard({ post }: PostCardProps) {
           )}
         </div>
 
-        <div className="flex-between gap-1 pt-3 border-t border-border">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-1 text-muted-foreground">
-              <Heart size={24} className="cursor-pointer" />
-              <span>{post.likes?.length || 0}</span>
-            </div>
-            <div className="flex items-center gap-1 text-muted-foreground">
-              <MessageCircle size={24} className="cursor-pointer" />
-              <span>{post.comments?.length || 0}</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-1 text-muted-foreground">
-            <Bookmark size={24} className="cursor-pointer" />
-          </div>
-        </div>
+        <PostInteractionBar post={post} className="pt-3 border-t border-border" />
       </div>
 
       {selectedPost && (
