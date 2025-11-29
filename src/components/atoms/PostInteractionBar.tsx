@@ -1,6 +1,11 @@
+"use client";
+
+import { useState, useTransition } from "react";
 import Post from "@/models/post";
 import { Bookmark, Heart, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { savePost, unsavePost } from "@/lib/actions/save.action";
+import { toast } from "sonner";
 
 interface PostInteractionBarProps {
   post: Post;
@@ -8,6 +13,39 @@ interface PostInteractionBarProps {
 }
 
 export default function PostInteractionBar({ post, className }: PostInteractionBarProps) {
+  const [isSaved, setIsSaved] = useState(post.is_saved || false);
+  const [isPending, startTransition] = useTransition();
+
+  const handleSaveToggle = async () => {
+    const previousState = isSaved;
+    setIsSaved(!isSaved);
+
+    startTransition(async () => {
+      try {
+        if (previousState) {
+          const response = await unsavePost(post.id);
+          if (response.success) {
+            toast.success("Unsaved post successfully");
+          } else {
+            setIsSaved(previousState);
+            toast.error("Failed to unsave post");
+          }
+        } else {
+          const response = await savePost(post.id);
+          if (response.success) {
+            toast.success("Saved post successfully");
+          } else {
+            setIsSaved(previousState);
+            toast.error("Failed to save post");
+          }
+        }
+      } catch (error) {
+        setIsSaved(previousState);
+        console.error("Error toggling save:", error);
+      }
+    });
+  };
+
   return (
     <div className={cn("flex-between gap-1 flex-shrink-0", className)}>
       <div className="flex items-center gap-6">
@@ -21,11 +59,15 @@ export default function PostInteractionBar({ post, className }: PostInteractionB
         </div>
       </div>
       <div className="flex items-center gap-1 text-muted-foreground">
-        {post.is_saved ? (
-          <Bookmark size={24} className="cursor-pointer text-primary fill-primary" />
-        ) : (
-          <Bookmark size={24} className="cursor-pointer" />
-        )}
+        <Bookmark 
+          size={24} 
+          className={cn(
+            "cursor-pointer transition-colors",
+            isSaved && "text-primary fill-primary",
+            isPending && "opacity-50"
+          )}
+          onClick={handleSaveToggle}
+        />
       </div>
     </div>
   );
