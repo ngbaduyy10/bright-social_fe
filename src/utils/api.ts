@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 
-const API_BASE_URL = process.env.BE_URL;
+const API_BASE_URL = `${process.env.BE_URL}/api`;
 
 type NextFetchRequestConfig = {
   revalidate?: number | false;
