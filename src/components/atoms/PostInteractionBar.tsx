@@ -21,7 +21,11 @@ export default function PostInteractionBar({ post, className }: PostInteractionB
         </div>
       </div>
       <div className="flex items-center gap-1 text-muted-foreground">
-        <Bookmark size={24} className="cursor-pointer" />
+        {post.is_saved ? (
+          <Bookmark size={24} className="cursor-pointer text-primary fill-primary" />
+        ) : (
+          <Bookmark size={24} className="cursor-pointer" />
+        )}
       </div>
     </div>
   );

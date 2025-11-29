@@ -23,7 +23,7 @@ export default function SearchInputDropdown() {
     setOpen(false);
     setTimeout(() => {
       setClearKeyword(true);
-    }, 100);
+    }, 500);
   }
 
   const onChange = useCallback((keyword: string) => {
