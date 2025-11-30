@@ -104,6 +104,7 @@ export const storyLimit = 8;
 export const mediaLimit = 8;
 export const friendLimit = 12;
 export const userLimit = 12;
+export const notificationLimit = 10;
 
 export const profileTabs = [
   { id: "posts", label: "Posts" },
