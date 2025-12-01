@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { notificationIcons, notificationColors } from "@/utils/constant";
 import { NotificationType } from "@/types";
@@ -7,6 +8,8 @@ import { useRouter } from "next/navigation";
 import Notification from "@/models/notification";
 import DefaultAvatar from "@/static/icons/default_avatar.png";
 import { getTimeAgo } from "@/utils/helpers";
+import { mutate } from "swr";
+import { ApiResponse } from "@/dto/apiResponse.dto";
 
 const getNotificationMessage = (type: NotificationType): string => {
   switch (type) {
@@ -29,18 +32,47 @@ interface NotificationCardProps {
   notification: Notification;
   isPage?: boolean;
   setOpen?: (open: boolean) => void;
+  markNotificationSeen?: (notificationId: string) => void;
 }
 
 export default function NotificationCard({ 
   notification,
   isPage = false,
   setOpen,
+  markNotificationSeen,
 }: NotificationCardProps) {
   const router = useRouter();
   const IconComponent = notificationIcons[notification.type];
   const bgColor = notificationColors[notification.type];
 
+  const [isSeen, setIsSeen] = useState(notification.is_seen);
+
+  useEffect(() => {
+    setIsSeen(notification.is_seen);
+  }, [notification.is_seen]);
+
   const handleClick = () => {
+    if (!isSeen && markNotificationSeen && notification.id) {
+      setIsSeen(true);
+      markNotificationSeen(notification.id);
+      
+      mutate(
+        "/api/notification/unseen",
+        async (currentData: ApiResponse<{ unseen_count: number }> | undefined) => {
+          if (currentData?.data && currentData.data.unseen_count > 0) {
+            return {
+              ...currentData,
+              data: {
+                unseen_count: currentData.data.unseen_count - 1,
+              },
+            };
+          }
+          return currentData;
+        },
+        false
+      );
+    }
+
     setOpen?.(false);
     if (
       notification.type === NotificationType.ADD_FRIEND ||
@@ -57,7 +89,7 @@ export default function NotificationCard({
   };
 
   return (
-    <div className={`rounded-lg flex-between gap-2 transition-colors cursor-pointer my-1 ${isPage ? "px-4 py-3" : "p-3"} ${notification.is_seen ? "bg-white hover:bg-gray-100" : "bg-secondary"}`} onClick={handleClick}>
+    <div className={`rounded-lg flex-between gap-2 transition-colors cursor-pointer my-1 ${isPage ? "px-4 py-3" : "p-3"} ${isSeen ? "bg-white hover:bg-gray-100" : "bg-secondary"}`} onClick={handleClick}>
       <div className="flex items-center gap-3">
         <div className="relative flex-shrink-0">
           <div className={`rounded-full bg-white flex-center overflow-hidden relative ${isPage ? "w-12 h-12" : "w-10 h-10"}`}>
@@ -84,7 +116,7 @@ export default function NotificationCard({
           </p>
         </div>
       </div>
-      {!notification.is_seen && (
+      {!isSeen && (
         <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0"></div>
       )}
     </div>

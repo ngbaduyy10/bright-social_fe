@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useTransition, useEffect } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import Post from "@/models/post";
 import PostContent from "@/components/atoms/PostContent";
@@ -9,6 +10,9 @@ import PostMediaCarousel from "../molecules/PostMediaCarousel";
 import CommentSection from "../molecules/CommentSection";
 import UserInfo from "../atoms/UserInfo";
 import PostInteractionBar from "../atoms/PostInteractionBar";
+import { createComment } from "@/lib/actions/comment.action";
+import { toast } from "sonner";
+import Comment from "@/models/comment";
 
 interface PostModalProps {
   post: Post;
@@ -18,8 +22,54 @@ interface PostModalProps {
 }
 
 export default function PostModal({ post, mediaOrder, open, onOpenChange }: PostModalProps) {
-  const handleSendComment = (comment: string) => {
-    console.log("Comment:", comment);
+  const [comments, setComments] = useState<Comment[]>(post.comments || []);
+  const [isCommentPending, startCommentTransition] = useTransition();
+
+  useEffect(() => {
+    if (open) {
+      setComments(post.comments || []);
+    }
+  }, [post.comments, open]);
+
+  const handleSendComment = (content: string) => {
+    if (!content.trim()) {
+      return;
+    }
+
+    const tempId = `temp-${Date.now()}`;
+    const optimisticComment: Comment = {
+      id: tempId,
+      content: content.trim(),
+      user: post.user,
+      is_active: true,
+      created_at: new Date(),
+      updated_at: new Date(),
+    };
+
+    setComments((prev) => [...prev, optimisticComment]);
+
+    startCommentTransition(async () => {
+      try {
+        const response = await createComment(post.id, content.trim());
+        
+        if (response.success && response.data) {
+          const newComment = response.data as Comment;
+          setComments((prev) => 
+            prev.map((comment) => 
+              comment.id === tempId ? newComment : comment
+            )
+          );
+          toast.success("Comment posted successfully");
+        } else {
+          setComments((prev) => prev.filter((comment) => comment.id !== tempId));
+          toast.error(response.message || "Failed to post comment");
+        }
+      } catch (error) {
+        setComments((prev) => prev.filter((comment) => comment.id !== tempId));
+        toast.error("An error occurred while posting comment");
+        console.error("Error posting comment:", error);
+      }
+    });
   };
 
   return (
@@ -58,13 +108,19 @@ export default function PostModal({ post, mediaOrder, open, onOpenChange }: Post
                 </div>
               )}
 
-              <PostInteractionBar post={post} className="px-4 py-3 border-y border-border" />
+              <PostInteractionBar 
+                post={{ ...post, comments }} 
+                className="px-4 py-3 border-y border-border" 
+              />
 
-              <CommentSection comments={post.comments || []} />
+              <CommentSection comments={comments} />
             </div>
 
             <div className="p-4 border-t border-border flex-shrink-0">
-              <CommentInput onSendComment={handleSendComment} />
+              <CommentInput 
+                onSendComment={handleSendComment} 
+                disabled={isCommentPending}
+              />
             </div>
           </div>
         </div>

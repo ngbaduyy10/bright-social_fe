@@ -12,10 +12,12 @@ export interface CommentFormData {
 
 interface CommentInputProps {
   onSendComment: (comment: string) => void;
+  disabled?: boolean;
 }
 
 export default function CommentInput({ 
-  onSendComment, 
+  onSendComment,
+  disabled = false,
 }: CommentInputProps) {
   const form = useForm<CommentFormData>({
     defaultValues: {
@@ -26,6 +28,9 @@ export default function CommentInput({
   const comment = form.watch("comment");
 
   const handleSubmit = () => {
+    if (disabled || !comment.trim()) {
+      return;
+    }
     onSendComment(comment);
     form.resetField("comment");
   };
@@ -47,6 +52,7 @@ export default function CommentInput({
           <CommonButton
             type="submit"
             className="px-4"
+            disabled={disabled}
           >
             <Send size={16} />
           </CommonButton>

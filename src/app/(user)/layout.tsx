@@ -2,12 +2,14 @@ import { ReactNode } from "react";
 import LeftSidebarWrapper from "@/components/organisms/layout/LeftSidebarWrapper";
 import RightSidebar from "@/components/organisms/layout/RightSidebar";
 import Header from "@/components/organisms/layout/Header";
-import { SessionProvider } from "next-auth/react"
+import { SessionProvider } from "next-auth/react";
+import { NotificationSocketProvider } from "@/contexts/NotificationSocketContext";
 
 export default function UserLayout({ children }: { children: ReactNode }) {
   return (
     <SessionProvider>
-      <div className="flex flex-col min-h-screen w-full bg-background">
+      <NotificationSocketProvider>
+        <div className="flex flex-col min-h-screen w-full bg-background">
         <div className="fixed top-0 left-0 right-0 h-[116px] md:h-[68px] border-b border-gray-200 z-10 bg-white">
           <Header />
         </div>
@@ -27,6 +29,7 @@ export default function UserLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </div>
+      </NotificationSocketProvider>
     </SessionProvider>
   );
 }

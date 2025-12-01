@@ -11,4 +11,5 @@ export default interface Post extends Base {
   likes?: Like[];
   comments?: Comment[];
   is_saved?: boolean;
+  is_liked?: boolean;
 }

@@ -1,9 +1,13 @@
+'use client';
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { UserPlus, MessageCircle, UserPen, UserCheck, X, Check } from "lucide-react";
 import User from "@/models/user";
 import DefaultAvatar from "@/static/icons/default_avatar.png";
 import CommonButton from "@/components/atoms/CommonButton";
 import { ConnectionType } from "@/types";
+import { useFriendActions } from "@/hooks/useFriendActions";
 
 interface ProfileHeaderProps {
   user: User;
@@ -15,11 +19,57 @@ export default function ProfileHeader({ user, isUser }: ProfileHeaderProps) {
     ? `${user.first_name} ${user.last_name}` 
     : user.username;
 
+  const [connectionType, setConnectionType] = useState<ConnectionType | undefined>(user.connection_type);
+
+  useEffect(() => {
+    setConnectionType(user.connection_type);
+  }, [user.connection_type]);
+
+  const {
+    handleSendRequest,
+    handleCancelRequest,
+    handleAcceptRequest,
+    handleRejectRequest,
+    handleRemoveFriend,
+    isPending,
+  } = useFriendActions({
+    friendId: user.id,
+  });
+
+  const handleSendRequestClick = () => {
+    setConnectionType(ConnectionType.SENT);
+    handleSendRequest();
+  };
+
+  const handleCancelRequestClick = () => {
+    setConnectionType(undefined);
+    handleCancelRequest();
+  };
+
+  const handleAcceptRequestClick = () => {
+    setConnectionType(ConnectionType.FRIEND);
+    handleAcceptRequest();
+  };
+
+  const handleRejectRequestClick = () => {
+    setConnectionType(undefined);
+    handleRejectRequest();
+  };
+
+  const handleRemoveFriendClick = () => {
+    setConnectionType(undefined);
+    handleRemoveFriend();
+  };
+
   const connectionButton = () => {
-    switch (user.connection_type) {
+    switch (connectionType) {
       case ConnectionType.FRIEND:
         return (
-          <CommonButton className="gap-2 px-6">
+          <CommonButton 
+            className="gap-2 px-6" 
+            onClick={handleRemoveFriendClick}
+            disabled={isPending}
+          >
             <UserCheck className="w-4 h-4" />
             Friend
           </CommonButton>
@@ -27,26 +77,42 @@ export default function ProfileHeader({ user, isUser }: ProfileHeaderProps) {
       case ConnectionType.REQUEST:
         return (
           <>
-            <CommonButton className="gap-2">
+            <CommonButton 
+              className="gap-2"
+              onClick={handleAcceptRequestClick}
+              disabled={isPending}
+            >
               <Check className="w-4 h-4" />
               Accept
             </CommonButton>
-            <CommonButton className="gap-2 bg-secondary text-black">
+            <CommonButton 
+              className="gap-2 bg-secondary text-black"
+              onClick={handleRejectRequestClick}
+              disabled={isPending}
+            >
               <X className="w-4 h-4" />
-              Cancel
+              Reject
             </CommonButton>
           </>
         )
       case ConnectionType.SENT:
         return (
-          <CommonButton className="gap-2">
+          <CommonButton 
+            className="gap-2"
+            onClick={handleCancelRequestClick}
+            disabled={isPending}
+          >
             <X className="w-4 h-4" />
             Cancel request
           </CommonButton>
         )
       default:
         return (
-          <CommonButton className="gap-2">
+          <CommonButton 
+            className="gap-2"
+            onClick={handleSendRequestClick}
+            disabled={isPending}
+          >
             <UserPlus className="w-4 h-4" />
             Add friend
           </CommonButton>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from "react";
 import UserAvatar from "@/components/atoms/UserAvatar";
 import { MessageCircle, Check, X, UserPlus } from "lucide-react";
 import CommonButton from "../atoms/CommonButton";
@@ -8,6 +9,7 @@ import Friend from "@/models/friend";
 import User from "@/models/user";
 import { getTimeAgo } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
+import { useFriendActions } from "@/hooks/useFriendActions";
 
 interface UserCardProps {
   friend?: Friend;
@@ -17,6 +19,12 @@ interface UserCardProps {
 
 export default function UserCard({ friend, user: userProp, type }: UserCardProps) {
   const router = useRouter();
+
+  const [connectionType, setConnectionType] = useState<ConnectionType | undefined>(type);
+
+  useEffect(() => {
+    setConnectionType(type);
+  }, [type]);
 
   let user: User;
   if (userProp) {
@@ -29,8 +37,38 @@ export default function UserCard({ friend, user: userProp, type }: UserCardProps
   
   const fullName = `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.username;
 
+  const {
+    handleSendRequest,
+    handleCancelRequest,
+    handleAcceptRequest,
+    handleRejectRequest,
+    isPending,
+  } = useFriendActions({
+    friendId: user.id,
+  });
+
+  const handleSendRequestClick = () => {
+    setConnectionType(ConnectionType.SENT);
+    handleSendRequest();
+  };
+
+  const handleCancelRequestClick = () => {
+    setConnectionType(ConnectionType.SUGGESTED);
+    handleCancelRequest();
+  };
+
+  const handleAcceptRequestClick = () => {
+    setConnectionType(ConnectionType.FRIEND);
+    handleAcceptRequest();
+  };
+
+  const handleRejectRequestClick = () => {
+    setConnectionType(ConnectionType.SUGGESTED);
+    handleRejectRequest();
+  };
+
   const renderActions = () => {
-    switch (type) {
+    switch (connectionType) {
       case ConnectionType.FRIEND:
         return (
           <>
@@ -47,11 +85,19 @@ export default function UserCard({ friend, user: userProp, type }: UserCardProps
       case ConnectionType.REQUEST:
         return (
           <>
-            <CommonButton className="w-full">
+            <CommonButton
+              className="w-full"
+              onClick={handleAcceptRequestClick}
+              disabled={isPending}
+            >
               <Check size={16} className="mr-2" />
               Accept
             </CommonButton>
-            <CommonButton className="w-full bg-secondary text-black">
+            <CommonButton
+              className="w-full bg-secondary text-black"
+              onClick={handleRejectRequestClick}
+              disabled={isPending}
+            >
               <X size={16} className="mr-2" />
               Reject
             </CommonButton>
@@ -64,7 +110,11 @@ export default function UserCard({ friend, user: userProp, type }: UserCardProps
             <CommonButton href={`/profile/${user.username}`} className="w-full">
               View Profile
             </CommonButton>
-            <CommonButton className="w-full bg-secondary text-black">
+            <CommonButton
+              className="w-full bg-secondary text-black"
+              onClick={handleCancelRequestClick}
+              disabled={isPending}
+            >
               <X size={16} className="mr-2" />
               Cancel Request
             </CommonButton>
@@ -77,7 +127,11 @@ export default function UserCard({ friend, user: userProp, type }: UserCardProps
             <CommonButton href={`/profile/${user.username}`} className="w-full">
               View Profile
             </CommonButton>
-            <CommonButton className="w-full bg-secondary text-black">
+            <CommonButton
+              className="w-full bg-secondary text-black"
+              onClick={handleSendRequestClick}
+              disabled={isPending}
+            >
               <UserPlus size={16} className="mr-2" />
               Add Friend
             </CommonButton>
@@ -103,7 +157,7 @@ export default function UserCard({ friend, user: userProp, type }: UserCardProps
             <p className="font-bold text-md truncate cursor-pointer" onClick={() => router.push(`/profile/${user.username}`)}>
               {fullName}
             </p>
-            {(type === ConnectionType.REQUEST || type === ConnectionType.SENT) && friend && (
+            {(connectionType === ConnectionType.REQUEST || connectionType === ConnectionType.SENT) && friend && (
               <p className="text-sm text-muted-foreground">
                 {getTimeAgo(friend.created_at)}
               </p>

@@ -12,9 +12,10 @@ interface NotificationSectionProps {
   isPage?: boolean;
   setOpen?: (open: boolean) => void;
   isLoading?: boolean;
+  markNotificationSeen?: (notificationId: string) => void;
 }
 
-export default function NotificationSection({ initialNotifications, isPage = false, setOpen, isLoading = false }: NotificationSectionProps) {
+export default function NotificationSection({ initialNotifications, isPage = false, setOpen, isLoading = false, markNotificationSeen }: NotificationSectionProps) {
   const infiniteData = useInfiniteData<Notification>({
     initialData: initialNotifications,
     limit: notificationLimit,
@@ -50,7 +51,13 @@ export default function NotificationSection({ initialNotifications, isPage = fal
   return (
     <>
       {notifications.map((notification) => (
-        <NotificationCard key={notification.id} notification={notification} isPage={isPage} setOpen={setOpen} />
+        <NotificationCard 
+          key={notification.id} 
+          notification={notification} 
+          isPage={isPage} 
+          setOpen={setOpen}
+          markNotificationSeen={markNotificationSeen}
+        />
       ))}
       {isPage && (
         <div ref={loadMoreRef}>
