@@ -12,6 +12,7 @@ import { ApiResponse } from "@/dto/apiResponse.dto";
 import { LoaderCircle, MessageSquare } from "lucide-react";
 import { isSameDay } from "@/utils/helpers";
 import Message from "@/models/message";
+import { useChatSocket } from "@/hooks/socket/useChatSocket";
 
 const fetcher = async (url: string) => {
   const response = await fetch(url);
@@ -30,11 +31,13 @@ export default function ChatInterface({ otherUserId }: ChatInterfaceProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
   const currentUserId = session?.user?.id;
+  const accessToken = (session?.user as any)?.access_token || "";
 
   const {
     data,
     isLoading,
     error,
+    mutate,
   } = useSWR<ApiResponse<Conversation>>(
     `/api/chat/conversation/${otherUserId}`,
     fetcher,
@@ -44,7 +47,40 @@ export default function ChatInterface({ otherUserId }: ChatInterfaceProps) {
     }
   );
   const conversation = data?.data;
-  const messages = conversation?.messages;
+  const fetchedMessages = conversation?.messages || [];
+
+  const {
+    messages: socketMessages,
+    sendMessage,
+    markSeen,
+    isConnected,
+  } = useChatSocket(accessToken);
+
+  const messages = useMemo(() => {
+    const allMessages = [...fetchedMessages];
+    
+    socketMessages.forEach((socketMsg) => {
+      const exists = allMessages.some((msg) => msg.id === socketMsg.id);
+      if (!exists) {
+        allMessages.push(socketMsg);
+      } else {
+        const index = allMessages.findIndex((msg) => msg.id === socketMsg.id);
+        if (index !== -1) {
+          allMessages[index] = socketMsg;
+        }
+      }
+    });
+
+    return allMessages.sort((a, b) => {
+      const dateA = a.created_at instanceof Date 
+        ? a.created_at 
+        : new Date(a.created_at);
+      const dateB = b.created_at instanceof Date 
+        ? b.created_at 
+        : new Date(b.created_at);
+      return dateA.getTime() - dateB.getTime();
+    });
+  }, [fetchedMessages, socketMessages]);
 
   const userName = useMemo(() => {
     if (!conversation || !currentUserId) return "User";
@@ -103,9 +139,49 @@ export default function ChatInterface({ otherUserId }: ChatInterfaceProps) {
     }
   }, [messages?.[messages?.length - 1]?.id]);
 
+  // Mark messages as seen when viewing (only when new unread messages arrive)
+  const lastMessageIdRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (conversation?.id && isConnected && messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      const lastMessageId = lastMessage?.id;
+      
+      if (lastMessageId && lastMessageId !== lastMessageIdRef.current) {
+        const hasUnreadMessages = messages.some(
+          (msg) => !msg.is_seen && msg.sender.id !== currentUserId
+        );
+        if (hasUnreadMessages && lastMessage.sender.id !== currentUserId) {
+          markSeen(conversation.id);
+          lastMessageIdRef.current = lastMessageId;
+        }
+      }
+    }
+  }, [conversation?.id, isConnected, messages, currentUserId, markSeen]);
+
+  // Revalidate conversation when new socket messages are received
+  const lastSocketMessageIdRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (socketMessages.length > 0) {
+      const lastSocketMessage = socketMessages[socketMessages.length - 1];
+      const lastSocketMessageId = lastSocketMessage?.id;
+      
+      if (lastSocketMessageId && lastSocketMessageId !== lastSocketMessageIdRef.current) {
+        const isNewMessage = !fetchedMessages.some((msg) => msg.id === lastSocketMessageId);
+        if (isNewMessage) {
+          mutate();
+          lastSocketMessageIdRef.current = lastSocketMessageId;
+        }
+      }
+    }
+  }, [socketMessages, fetchedMessages, mutate]);
+
   const handleSendMessage = (text: string) => {
-    console.log(text);
-    // TODO: Implement send message
+    if (!conversation?.id || !text.trim() || !isConnected) {
+      return;
+    }
+
+    sendMessage(conversation.id, text.trim());
+    
     setTimeout(() => {
       scrollToBottom();
     }, 100);

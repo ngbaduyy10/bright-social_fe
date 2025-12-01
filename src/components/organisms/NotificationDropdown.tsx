@@ -13,7 +13,6 @@ import NotificationSection from "./NotificationSection";
 import Notification from "@/models/notification";
 import { ApiResponse } from "@/dto/apiResponse.dto";
 import useSWR, { mutate } from "swr";
-import { useSession } from "next-auth/react";
 import { useNotificationSocketContext } from "@/contexts/NotificationSocketContext";
 import { toast } from "sonner";
 import { NotificationType } from "@/types";

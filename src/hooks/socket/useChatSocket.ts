@@ -17,24 +17,26 @@ export const useChatSocket = (token: string) => {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on('message_received', (message) => {
-      console.log('📨 Nhận được message:', message);
+    socket.on('message_received', (message: Message) => {
+      console.log('Message received:', message);
       setMessages((prev) => [...prev, message]);
     });
 
-    socket.on('message_seen', (data) => {
-      console.log('👁️ Message đã được đọc:', data);
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === data.messageId || msg.conversation.id === data.conversationId
-            ? { ...msg, is_seen: true, seen_at: new Date() }
-            : msg
-        )
-      );
+    socket.on('message_seen', (conversation: Conversation) => {
+      if (conversation.messages && conversation.messages.length > 0) {
+        const conversationMessageIds = conversation.messages.map((msg) => msg.id);
+        setMessages((prev) =>
+          prev.map((msg) =>
+            conversationMessageIds.includes(msg.id)
+              ? { ...msg, is_seen: true, seen_at: new Date() }
+              : msg
+          )
+        );
+      }
     });
 
-    socket.on('conversation_updated', (conversation) => {
-      console.log('🔄 Conversation updated:', conversation);
+    socket.on('conversation_updated', (conversation: Conversation) => {
+      console.log('Conversation updated:', conversation);
       setConversations((prev) =>
         prev.map((item) =>
           item.id === conversation.id ? { ...item, ...conversation } : item
@@ -61,9 +63,9 @@ export const useChatSocket = (token: string) => {
     }
   };
 
-  const markSeen = (conversationId?: string, messageId?: string) => {
+  const markSeen = (conversationId: string) => {
     if (socket && isConnected) {
-      socket.emit('mark_seen', { conversationId, messageId });
+      socket.emit('mark_seen', { conversationId });
     }
   };
 
