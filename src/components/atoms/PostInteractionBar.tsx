@@ -31,18 +31,14 @@ export default function PostInteractionBar({ post, className }: PostInteractionB
       try {
         if (previousState) {
           const response = await unlikePost(post.id);
-          if (response.success) {
-            toast.success("Unliked post");
-          } else {
+          if (!response.success) {
             setIsLiked(previousState);
             setLikesCount(previousCount);
             toast.error("Failed to unlike post");
           }
         } else {
           const response = await likePost(post.id);
-          if (response.success) {
-            toast.success("Liked post");
-          } else {
+          if (!response.success) {
             setIsLiked(previousState);
             setLikesCount(previousCount);
             toast.error("Failed to like post");
@@ -64,17 +60,13 @@ export default function PostInteractionBar({ post, className }: PostInteractionB
       try {
         if (previousState) {
           const response = await unsavePost(post.id);
-          if (response.success) {
-            toast.success("Unsaved post successfully");
-          } else {
+          if (!response.success) {
             setIsSaved(previousState);
             toast.error("Failed to unsave post");
           }
         } else {
           const response = await savePost(post.id);
-          if (response.success) {
-            toast.success("Saved post successfully");
-          } else {
+          if (!response.success) {
             setIsSaved(previousState);
             toast.error("Failed to save post");
           }
