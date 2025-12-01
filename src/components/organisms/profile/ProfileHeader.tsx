@@ -166,7 +166,7 @@ export default function ProfileHeader({ user, isUser }: ProfileHeaderProps) {
               <>
                 {connectionButton()}
                 
-                <CommonButton className="gap-2 bg-background text-black hover:bg-gray-200">
+                <CommonButton className="gap-2 bg-background text-black hover:bg-gray-200" href={`/messages/${user.id}`}>
                   <MessageCircle className="w-4 h-4" />
                   Message
                 </CommonButton>
