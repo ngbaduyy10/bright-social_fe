@@ -20,9 +20,9 @@ export default function Header() {
             <div className="flex items-center gap-4">
               <Link href="/messages" className="relative">
                 <MessageCircle className="w-[25px] h-[25px] text-black" />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex-center">
+                {/* <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex-center">
                   4
-                </span>
+                </span> */}
               </Link>
               <NotificationDropdown />
             </div>

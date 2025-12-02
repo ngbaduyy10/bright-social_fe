@@ -4,13 +4,15 @@ import RightSidebar from "@/components/organisms/layout/RightSidebar";
 import Header from "@/components/organisms/layout/Header";
 import { SessionProvider } from "next-auth/react";
 import { NotificationSocketProvider } from "@/contexts/NotificationSocketContext";
+import { ChatSocketProvider } from "@/contexts/ChatSocketContext";
 import ChatMessageNotification from "@/components/organisms/chat/ChatMessageNotification";
 
 export default function UserLayout({ children }: { children: ReactNode }) {
   return (
     <SessionProvider>
       <NotificationSocketProvider>
-        <ChatMessageNotification />
+        <ChatSocketProvider>
+          <ChatMessageNotification />
         <div className="flex flex-col min-h-screen w-full bg-background">
           <div className="fixed top-0 left-0 right-0 h-[116px] md:h-[68px] border-b border-gray-200 z-10 bg-white">
             <Header />
@@ -31,6 +33,7 @@ export default function UserLayout({ children }: { children: ReactNode }) {
             </div>
           </div>
         </div>
+        </ChatSocketProvider>
       </NotificationSocketProvider>
     </SessionProvider>
   );

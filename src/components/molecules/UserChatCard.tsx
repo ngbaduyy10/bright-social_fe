@@ -9,9 +9,10 @@ interface UserChatCardProps {
   conversation: Conversation;
   isActive: boolean;
   currentUserId?: string;
+  onClick?: (conversation: Conversation) => void;
 }
 
-export default function UserChatCard({ conversation, isActive, currentUserId }: UserChatCardProps) {
+export default function UserChatCard({ conversation, isActive, currentUserId, onClick }: UserChatCardProps) {
   const router = useRouter();
 
   const otherUser =
@@ -25,13 +26,21 @@ export default function UserChatCard({ conversation, isActive, currentUserId }: 
   const lastMessage = conversation.last_message;
   const isUnread = lastMessage ? (!lastMessage.is_seen && lastMessage.sender?.id !== currentUserId) : false;
 
+  const handleClick = () => {
+    if (onClick) {
+      onClick(conversation);
+    } else {
+      router.push(`/messages/${otherUser?.id}`);
+    }
+  };
+
   return (
     <div
       key={conversation.id}
       className={`flex items-center p-3 rounded-lg cursor-pointer transition-colors ${
         isActive ? "bg-secondary" : "hover:bg-gray-100"
       }`}
-      onClick={() => router.push(`/messages/${otherUser?.id}`)}
+      onClick={handleClick}
     >
       <div className="flex-shrink-0 mr-[10px]">
         <UserAvatar image={otherUser?.image} className="w-10 h-10" />

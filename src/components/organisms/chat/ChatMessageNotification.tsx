@@ -4,16 +4,15 @@ import { useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import { useChatSocket } from "@/hooks/socket/useChatSocket";
+import { useChatSocketContext } from "@/contexts/ChatSocketContext";
 
 export default function ChatMessageNotification() {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
   const currentUserId = session?.user?.id;
-  const accessToken = (session?.user as any)?.access_token || "";
 
-  const { messages, isConnected } = useChatSocket(accessToken);
+  const { messages, isConnected } = useChatSocketContext();
   const lastMessageIdRef = useRef<string>("");
   const processedMessageIdsRef = useRef<Set<string>>(new Set());
 

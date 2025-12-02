@@ -10,9 +10,10 @@ import useSWR from "swr";
 import Conversation from "@/models/conversation";
 import { ApiResponse } from "@/dto/apiResponse.dto";
 import { LoaderCircle, MessageSquare } from "lucide-react";
+import ChatHeaderSkeleton from "@/components/atoms/skeleton/ChatHeaderSkeleton";
 import { isSameDay } from "@/utils/helpers";
 import Message from "@/models/message";
-import { useChatSocket } from "@/hooks/socket/useChatSocket";
+import { useChatSocketContext } from "@/contexts/ChatSocketContext";
 
 const fetcher = async (url: string) => {
   const response = await fetch(url);
@@ -31,7 +32,6 @@ export default function ChatInterface({ otherUserId }: ChatInterfaceProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
   const currentUserId = session?.user?.id;
-  const accessToken = (session?.user as any)?.access_token || "";
 
   const {
     data,
@@ -54,7 +54,7 @@ export default function ChatInterface({ otherUserId }: ChatInterfaceProps) {
     sendMessage,
     markSeen,
     isConnected,
-  } = useChatSocket(accessToken);
+  } = useChatSocketContext();
 
   const messages = useMemo(() => {
     const allMessages = [...fetchedMessages];
@@ -190,7 +190,7 @@ export default function ChatInterface({ otherUserId }: ChatInterfaceProps) {
   if (isLoading) {
     return (
       <div className="flex flex-col h-full bg-white rounded-lg shadow-sm overflow-hidden">
-        <ChatHeader userName={userName} />
+        <ChatHeaderSkeleton />
         <div className="flex-1 flex-center animate-spin">
           <LoaderCircle/>
         </div>
