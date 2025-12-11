@@ -1,35 +1,60 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { createPost } from "@/lib/actions/post.action";
 import { Image as ImageIcon, X } from "lucide-react";
+import { toast } from "sonner";
 import UserAvatar from "@/components/atoms/UserAvatar";
 import CommonButton from "@/components/atoms/CommonButton";
 import { cn } from "@/lib/utils";
 import PageTitle from "@/components/atoms/PageTitle";
 import Image from "next/image";
-import { useUploadMultipleImages } from "@/hooks/useUploadMultipleImages";
+import { useUploadMultipleImages, ImageData } from "@/hooks/useUploadMultipleImages";
 
 export default function CreatePostPage() {
   const { data: session } = useSession();
+  const router = useRouter();
   const user = session?.user;
   const [content, setContent] = useState("");
-  const [images, setImages] = useState<string[]>([]);
-  const { 
-    isDragging, 
-    fileInputRef, 
-    handleFileInputChange, 
-    handleDragOver, 
-    handleDragLeave, 
-    handleDrop, 
-    handleRemoveImage 
-  } = useUploadMultipleImages({ setImages });
+  const [images, setImages] = useState<ImageData[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const {
+    isDragging,
+    fileInputRef,
+    handleFileInputChange,
+    handleDragOver,
+    handleDragLeave,
+    handleDrop,
+    handleRemoveImage
+  } = useUploadMultipleImages({ images, setImages });
+
+  const handleSubmit = async () => {
+    if (!content.trim() && images.length === 0) return;
+
+    setIsSubmitting(true);
+    try {
+      const response = await createPost(content, images);
+      if (response.success) {
+        toast.success("Post created successfully!");
+        router.push("/home");
+      } else {
+        toast.error(response.message || "Failed to create post");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+      console.error("Error creating post:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <>
       <PageTitle title="Create Post" description="Share your thoughts with the world" />
 
-      <div 
+      <div
         className={cn(
           "bg-white rounded-xl shadow-sm p-4 transition-all",
           isDragging && "ring-2 ring-primary ring-offset-2 bg-secondary"
@@ -39,7 +64,7 @@ export default function CreatePostPage() {
         onDrop={handleDrop}
       >
         <div className="flex items-center gap-3 mb-6">
-          <UserAvatar 
+          <UserAvatar
             image={user?.image || undefined}
             className="w-12 h-12"
           />
@@ -62,9 +87,9 @@ export default function CreatePostPage() {
         {images.length > 0 && (
           <div className="flex flex-wrap gap-3 mb-6">
             {images.map((image, index) => (
-              <div className="group relative w-32 h-32 rounded-lg overflow-hidden">
+              <div key={index} className="group relative w-32 h-32 rounded-lg overflow-hidden">
                 <Image
-                  src={image}
+                  src={image.url}
                   alt={`Preview ${index + 1}`}
                   className="object-cover"
                   fill
@@ -98,9 +123,10 @@ export default function CreatePostPage() {
 
           <CommonButton
             className="px-8"
-            disabled={!content.trim() && images.length === 0}
+            disabled={(!content.trim() && images.length === 0) || isSubmitting}
+            onClick={handleSubmit}
           >
-            Publish
+            {isSubmitting ? "Publishing..." : "Publish"}
           </CommonButton>
         </div>
       </div>
