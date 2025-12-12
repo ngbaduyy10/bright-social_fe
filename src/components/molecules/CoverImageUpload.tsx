@@ -6,14 +6,15 @@ import CommonButton from "@/components/atoms/CommonButton";
 interface CoverImageUploadProps {
   image: string | null;
   setImage: (image: string | null) => void;
+  setFile: (file: File | null) => void;
 }
 
-export default function CoverImageUpload({ image, setImage }: CoverImageUploadProps) {
+export default function CoverImageUpload({ image, setImage, setFile }: CoverImageUploadProps) {
   const {
     fileInputRef, 
     handleFileInputChange, 
     handleRemoveImage 
-  } = useUploadImage({ setImage });
+  } = useUploadImage({ setImage, setFile });
 
   return (
     <>

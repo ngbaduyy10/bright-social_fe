@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Image as ImageIcon, X } from "lucide-react";
 import UserAvatar from "@/components/atoms/UserAvatar";
 import CommonButton from "@/components/atoms/CommonButton";
@@ -9,12 +10,36 @@ import { cn } from "@/lib/utils";
 import PageTitle from "@/components/atoms/PageTitle";
 import Image from "next/image";
 import { useUploadMultipleImages } from "@/hooks/useUploadMultipleImages";
+import { createPost } from "@/lib/actions/post.action";
+import { toast } from "sonner";
+import useSWR from "swr";
+import { ApiResponse } from "@/dto/apiResponse.dto";
+import User from "@/models/user";
+
+const fetcher = async (url: string) => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error("Failed to fetch");
+  }
+  const data = await response.json();
+  return data;
+};
 
 export default function CreatePostPage() {
   const { data: session } = useSession();
-  const user = session?.user;
+  const router = useRouter();
   const [content, setContent] = useState("");
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<Array<{ preview: string; file: File }>>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const {
+    data: userResponse,
+  } = useSWR<ApiResponse<User>>(
+    session ? "/api/user/me" : null,
+    fetcher
+  );
+
+  const userData = userResponse?.data;
   const { 
     isDragging, 
     fileInputRef, 
@@ -24,6 +49,38 @@ export default function CreatePostPage() {
     handleDrop, 
     handleRemoveImage 
   } = useUploadMultipleImages({ setImages });
+
+  const handleSubmit = async () => {
+    if (!content.trim() && images.length === 0) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const formData = new FormData();
+      if (content.trim()) {
+        formData.append('content', content.trim());
+      }
+      images.forEach((image) => {
+        formData.append('media', image.file);
+      });
+
+      const response = await createPost(formData);
+      if (response.success) {
+        toast.success("Post created successfully!");
+        setContent("");
+        setImages([]);
+        router.push(`/post/${response.data?.id}`);
+      } else {
+        toast.error(response.message || "Failed to create post");
+      }
+    } catch (error) {
+      console.error("Error creating post:", error);
+      toast.error("An error occurred while creating post");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <>
@@ -40,12 +97,16 @@ export default function CreatePostPage() {
       >
         <div className="flex items-center gap-3 mb-6">
           <UserAvatar 
-            image={user?.image || undefined}
+            image={userData?.image || undefined}
             className="w-12 h-12"
           />
           <div>
-            <p className="font-semibold text-foreground">{user?.first_name} {user?.last_name}</p>
-            <p className="text-sm text-muted-foreground">@{user?.name}</p>
+            <p className="font-semibold text-foreground">
+              {userData?.first_name && userData?.last_name 
+                ? `${userData.first_name} ${userData.last_name}`
+                : userData?.username || ""}
+            </p>
+            <p className="text-sm text-muted-foreground">@{userData?.username || ""}</p>
           </div>
         </div>
 
@@ -62,9 +123,9 @@ export default function CreatePostPage() {
         {images.length > 0 && (
           <div className="flex flex-wrap gap-3 mb-6">
             {images.map((image, index) => (
-              <div className="group relative w-32 h-32 rounded-lg overflow-hidden">
+              <div key={index} className="group relative w-32 h-32 rounded-lg overflow-hidden">
                 <Image
-                  src={image}
+                  src={image.preview}
                   alt={`Preview ${index + 1}`}
                   className="object-cover"
                   fill
@@ -98,9 +159,10 @@ export default function CreatePostPage() {
 
           <CommonButton
             className="px-8"
-            disabled={!content.trim() && images.length === 0}
+            disabled={(!content.trim() && images.length === 0) || isSubmitting}
+            onClick={handleSubmit}
           >
-            Publish
+            {isSubmitting ? "Publishing..." : "Publish"}
           </CommonButton>
         </div>
       </div>

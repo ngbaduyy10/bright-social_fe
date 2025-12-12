@@ -8,9 +8,9 @@ type NextFetchRequestConfig = {
 };
 
 interface FetchAPIOptions {
-  method?: "GET" | "POST" | "PUT" | "DELETE";
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   authToken?: string;
-  body?: Record<string, unknown> | string;
+  body?: Record<string, unknown> | string | FormData;
   next?: NextFetchRequestConfig;
   cache?: RequestCache;
 }
@@ -18,13 +18,15 @@ interface FetchAPIOptions {
 export async function fetchApi(url: string, options?: FetchAPIOptions) {
   const { method, authToken, body, next, cache } = options || {};
 
+  const isFormData = body instanceof FormData;
+
   const headers: RequestInit & { next?: NextFetchRequestConfig } = {
     method: method || "GET",
     headers: {
-      "Content-Type": "application/json",
+      ...(!isFormData && { "Content-Type": "application/json" }),
       ...(authToken && { Authorization: `Bearer ${authToken}` }),
     },
-    ...(body && { body: JSON.stringify(body) }),
+    ...(body && { body: isFormData ? body : JSON.stringify(body) }),
     ...(next && { next }),
     ...(cache && { cache }),
   };

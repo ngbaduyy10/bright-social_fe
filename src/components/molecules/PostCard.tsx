@@ -1,6 +1,6 @@
 "use client";
 
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Trash2 } from "lucide-react";
 import Post from "@/models/post";
 import PostContent from "@/components/atoms/PostContent";
 import PostMedia from "./PostMedia";
@@ -10,6 +10,25 @@ import Media from "@/models/media";
 import UserInfo from "../atoms/UserInfo";
 import PostInteractionBar from "../atoms/PostInteractionBar";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { deletePost } from "@/lib/actions/post.action";
+import { toast } from "sonner";
 
 interface PostCardProps {
   post: Post;
@@ -18,10 +37,17 @@ interface PostCardProps {
 export default function PostCard({ post }: PostCardProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { data: session } = useSession();
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [selectedMediaOrder, setSelectedMediaOrder] = useState<number>(0);
   const [open, setOpen] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
   const sortedMedia = post.media?.sort((a, b) => a.order - b.order);
+  
+  const currentUserId = session?.user?.id;
+  const isUserPost = currentUserId && post.user?.id && currentUserId === post.user.id.toString();
 
   useEffect(() => {
     const postId = searchParams.get("postId");
@@ -63,15 +89,65 @@ export default function PostCard({ post }: PostCardProps) {
     }
   }
 
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      const response = await deletePost(post.id.toString());
+      if (response.success) {
+        setIsDeleted(true);
+        toast.success("Post deleted successfully");
+        
+        if (selectedPost && selectedPost.id.toString() === post.id.toString()) {
+          setOpen(false);
+          setSelectedPost(null);
+        }
+        
+        router.refresh();
+      } else {
+        toast.error(response.message || "Failed to delete post");
+      }
+    } catch (error) {
+      toast.error("An error occurred while deleting the post");
+      console.error("Error deleting post:", error);
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteDialog(false);
+    }
+  }
+
+  if (isDeleted) {
+    return null;
+  }
+
   return (
     <>
       <div className="bg-white flex flex-col gap-4 shadow-sm rounded-lg p-6">
         <div className="flex items-start justify-between">
           <UserInfo user={post.user} createdAt={post.created_at} />
 
-          <div className="flex-center bg-white hover:bg-background rounded-md p-1 cursor-pointer">
-            <MoreHorizontal size={20} />
-          </div>
+          {isUserPost ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="flex-center bg-white hover:bg-background rounded-md p-1 cursor-pointer">
+                  <MoreHorizontal size={20} />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="border-red-200">
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={() => setShowDeleteDialog(true)}
+                  className="cursor-pointer"
+                >
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="flex-center bg-white hover:bg-background rounded-md p-1 cursor-pointer">
+              <MoreHorizontal size={20} />
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col gap-3">
@@ -95,6 +171,27 @@ export default function PostCard({ post }: PostCardProps) {
           onOpenChange={handleOpenChange} 
         />
       )}
+
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your post.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting} className="border-border">Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="bg-destructive hover:bg-destructive/90"
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   )
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
@@ -8,18 +8,46 @@ import CustomFormControl from "@/components/molecules/CustomFormControl";
 import CommonButton from "@/components/atoms/CommonButton";
 import { editProfileFormSchema, EditProfileFormData } from "@/utils/zod";
 import { Gender } from "@/types";
-import { User, Mail, Phone, RotateCcw } from "lucide-react";
+import { User as UserIcon, Mail, Phone, RotateCcw } from "lucide-react";
 import PageTitle from "@/components/atoms/PageTitle";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import CoverImageUpload from "@/components/molecules/CoverImageUpload";
 import AvatarUpload from "@/components/molecules/AvatarUpload";
+import { updateUser } from "@/lib/actions/user.action";
+import { toast } from "sonner";
+import User from "@/models/user";
+import useSWR, { useSWRConfig } from "swr";
+import { ApiResponse } from "@/dto/apiResponse.dto";
+import { useSession } from "next-auth/react";
+
+const fetcher = async (url: string) => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error("Failed to fetch");
+  }
+  const data = await response.json();
+  return data;
+};
 
 export default function EditProfilePage() {
+  const { data: session } = useSession();
+  const { mutate: mutateSWR } = useSWRConfig();
   const [loading, setLoading] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [profileFile, setProfileFile] = useState<File | null>(null);
   const [coverImage, setCoverImage] = useState<string | null>(null);
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+
+  const {
+    data: userResponse,
+  } = useSWR<ApiResponse<User>>(
+    session ? "/api/user/me" : null,
+    fetcher
+  );
+
+  const userData = userResponse?.data;
 
   const form = useForm<EditProfileFormData>({
     resolver: zodResolver(editProfileFormSchema),
@@ -34,18 +62,57 @@ export default function EditProfilePage() {
     },
   });
 
+  useEffect(() => {
+    if (userData) {
+      form.reset({
+        email: userData.email || "",
+        username: userData.username || "",
+        first_name: userData.first_name || "",
+        last_name: userData.last_name || "",
+        gender: userData.gender,
+        phone: userData.phone || "",
+        bio: userData.bio || "",
+      });
+
+      if (userData.image) {
+        setProfileImage(userData.image);
+      }
+      if (userData.cover_image) {
+        setCoverImage(userData.cover_image);
+      }
+    }
+  }, [userData, form]);
+
   const onSubmit = async (data: EditProfileFormData) => {
     setLoading(true);
     try {
-      const submitData = {
-        ...data,
-        ...(profileImage && { image: profileImage }),
-        ...(coverImage && { cover_image: coverImage }),
-      };
-      console.log("Profile data:", submitData);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (key === "email") return;
+        
+        if (value !== undefined && value !== null) {
+          formData.append(key, String(value));
+        }
+      });
+
+      if (profileFile) {
+        formData.append("image", profileFile);
+      }
+
+      if (coverFile) {
+        formData.append("cover_image", coverFile);
+      }
+
+      const response = await updateUser(formData);
+      if (response.success) {
+        toast.success("Profile updated successfully");
+        mutateSWR("/api/user/me");
+      } else {
+        toast.error(response.message || "Failed to update profile");
+      }
     } catch (error) {
       console.error("Profile update error:", error);
+      toast.error("An error occurred while updating profile");
     } finally {
       setLoading(false);
     }
@@ -56,10 +123,10 @@ export default function EditProfilePage() {
       <PageTitle title="Edit Profile" description="Edit your profile information" />
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 bg-white rounded-xl shadow-sm p-4">
-          <AvatarUpload image={profileImage} setImage={setProfileImage} />
+        <div onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 bg-white rounded-xl shadow-sm p-4">
+          <AvatarUpload image={profileImage} setImage={setProfileImage} setFile={setProfileFile} />
 
-          <CoverImageUpload image={coverImage} setImage={setCoverImage} />
+          <CoverImageUpload image={coverImage} setImage={setCoverImage} setFile={setCoverFile} />
 
           <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
             <CustomFormControl
@@ -67,7 +134,7 @@ export default function EditProfilePage() {
               name="first_name"
               label="First Name"
               type="text"
-              icon={User}
+              icon={UserIcon}
               classNameInput="h-11"
             />
             <CustomFormControl
@@ -75,7 +142,7 @@ export default function EditProfilePage() {
               name="last_name"
               label="Last Name"
               type="text"
-              icon={User}
+              icon={UserIcon}
               classNameInput="h-11"
             />
           </div>
@@ -86,7 +153,7 @@ export default function EditProfilePage() {
               name="username"
               label="Username"
               type="text"
-              icon={User}
+              icon={UserIcon}
               classNameInput="h-11"
             />
 
@@ -97,6 +164,7 @@ export default function EditProfilePage() {
               type="email"
               icon={Mail}
               classNameInput="h-11"
+              disabled={true}
             />
           </div>
 
@@ -166,8 +234,13 @@ export default function EditProfilePage() {
 
           <div className="flex justify-end gap-3">
             <CommonButton
-              type="button"
-              onClick={() => form.reset()}
+              onClick={() => {
+                form.reset();
+                setProfileImage(null);
+                setProfileFile(null);
+                setCoverImage(null);
+                setCoverFile(null);
+              }}
               disabled={loading}
               className="gap-1 bg-secondary text-primary"
             >
@@ -175,14 +248,13 @@ export default function EditProfilePage() {
               Reset
             </CommonButton>
             <CommonButton
-              type="button"
               onClick={form.handleSubmit(onSubmit)}
               disabled={loading}
             >
-              Save Changes
+              {loading ? "Saving..." : "Save Changes"}
             </CommonButton>
           </div>
-        </form>
+        </div>
       </Form>
     </>
   );

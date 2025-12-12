@@ -13,6 +13,7 @@ interface CustomFormControlProps<T extends FieldValues> {
   classNameInput?: string;
   icon?: React.ElementType;
   isLarge?: boolean;
+  disabled?: boolean;
 };
 
 export default function CustomFormControl<T extends FieldValues>({
@@ -25,6 +26,7 @@ export default function CustomFormControl<T extends FieldValues>({
   classNameInput,
   icon: Icon,
   isLarge = false,
+  disabled = false,
 }: CustomFormControlProps<T>) {
   return (
     <FormField
@@ -47,12 +49,14 @@ export default function CustomFormControl<T extends FieldValues>({
                 type={type} 
                 placeholder={placeholder} 
                 {...field}
+                disabled={disabled}
                 className={`
                   transition-all duration-200 ease-in-out border-none h-10
                   focus:ring-2 focus:ring-primary focus:border-primary bg-background
                   ${classNameInput ?? ''}
                   ${Icon && 'pl-10'}
                   ${fieldState.error && 'border-red-500 focus:ring-red-500 focus:border-red-500'}
+                  ${disabled && 'cursor-not-allowed opacity-60'}
                 `}
                 autoComplete="off"
               />

@@ -7,15 +7,16 @@ import Image from "next/image";
 interface AvatarUploadProps {
   image: string | null;
   setImage: (image: string | null) => void;
+  setFile: (file: File | null) => void;
 }
 
-export default function AvatarUpload({ image, setImage }: AvatarUploadProps) {
+export default function AvatarUpload({ image, setImage, setFile }: AvatarUploadProps) {
   const {
     isDragging, 
     fileInputRef, 
     handleFileInputChange, 
     handleRemoveImage 
-  } = useUploadImage({ setImage });
+  } = useUploadImage({ setImage, setFile });
   
   return (
     <div className="w-full">

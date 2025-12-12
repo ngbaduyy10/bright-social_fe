@@ -13,3 +13,11 @@ export async function getAllUsers({ keyword, page, limit }: Filter) {
   const response = await fetchApiWithAuth(url, { method: "GET" });
   return response;
 }
+
+export async function updateUser(formData: FormData) {
+  const response = await fetchApiWithAuth(`/user`, {
+    method: "PATCH",
+    body: formData,
+  });
+  return response;
+}

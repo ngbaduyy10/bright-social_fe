@@ -2,9 +2,10 @@ import { useRef, useState } from "react";
 
 interface UseUploadImageProps {
   setImage: (image: string | null) => void;
+  setFile?: (file: File | null) => void;
 }
 
-export function useUploadImage({ setImage }: UseUploadImageProps) {
+export function useUploadImage({ setImage, setFile }: UseUploadImageProps) {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -13,6 +14,7 @@ export function useUploadImage({ setImage }: UseUploadImageProps) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result as string);
+        setFile?.(file);
       };
       reader.readAsDataURL(file);
     }
@@ -46,6 +48,7 @@ export function useUploadImage({ setImage }: UseUploadImageProps) {
 
   const handleRemoveImage = () => {
     setImage(null);
+    setFile?.(null);
   };
 
   return {

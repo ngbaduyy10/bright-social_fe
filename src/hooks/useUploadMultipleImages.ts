@@ -1,7 +1,12 @@
 import { useRef, useState, Dispatch, SetStateAction } from "react";
 
+interface ImageData {
+  preview: string;
+  file: File;
+}
+
 interface UseUploadMultipleImagesProps {
-  setImages: Dispatch<SetStateAction<string[]>>;
+  setImages: Dispatch<SetStateAction<ImageData[]>>;
 }
 
 export function useUploadMultipleImages({ setImages }: UseUploadMultipleImagesProps) {
@@ -13,7 +18,10 @@ export function useUploadMultipleImages({ setImages }: UseUploadMultipleImagesPr
       if (file.type.startsWith("image/")) {
         const reader = new FileReader();
         reader.onloadend = () => {
-          setImages((prev) => [...prev, reader.result as string]);
+          setImages((prev) => [...prev, { 
+            preview: reader.result as string,
+            file: file
+          }]);
         };
         reader.readAsDataURL(file);
       }

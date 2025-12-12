@@ -14,12 +14,37 @@ import {
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { useState } from "react";
+import useSWR from "swr";
+import { ApiResponse } from "@/dto/apiResponse.dto";
+import UserModel from "@/models/user";
+
+const fetcher = async (url: string) => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error("Failed to fetch");
+  }
+  const data = await response.json();
+  return data;
+};
 
 export default function AvatarDropDown() {
   const { data: session } = useSession();
-  const user = session?.user;
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
+  const {
+    data: userResponse,
+  } = useSWR<ApiResponse<UserModel>>(
+    session ? "/api/user/me" : null,
+    fetcher,
+    {
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+      refreshInterval: 0,
+    }
+  );
+
+  const userData = userResponse?.data;
 
   const handleLogout = async () => {
     setLoading(true);
@@ -28,28 +53,34 @@ export default function AvatarDropDown() {
     setLoading(false);
   }
 
+  const displayName = userData?.first_name && userData?.last_name
+    ? `${userData.first_name} ${userData.last_name}`
+    : userData?.username || "";
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild> 
         <Button className="w-10 h-10 p-0 rounded-full bg-white hover:bg-white overflow-hidden focus-visible:ring-0">
           <Image 
-            src={user?.image || DefaultAvatar} 
-            alt={user?.name || "User Avatar"} 
+            src={userData?.image || DefaultAvatar} 
+            alt={userData?.username || "User Avatar"} 
             className="object-cover w-full h-full" 
+            width={40}
+            height={40}
           />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56 border-gray-200">
         <div className="flex items-center justify-start gap-2 px-2 py-1">
           <div className="flex flex-col">
-            <p className="font-sm truncate">{user?.first_name} {user?.last_name}</p>
-            <p className="truncate text-sm text-muted-foreground">@{user?.name}</p>
+            <p className="font-sm truncate">{displayName}</p>
+            <p className="truncate text-sm text-muted-foreground">@{userData?.username || ""}</p>
           </div>
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem 
           className="cursor-pointer"
-          onClick={() => router.push(`/profile/${user?.name}`)}
+          onClick={() => router.push(`/profile/${userData?.username || ""}`)}
         >
           <User className="mr-1" />
           <span>Profile</span>
