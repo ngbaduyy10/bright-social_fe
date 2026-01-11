@@ -17,11 +17,11 @@ export default function HeroSection() {
           </p>
           
           <div className="flex-center gap-4">
-            <CommonButton className="px-8">
-              Try 30-Days Trial
+            <CommonButton className="px-8" href="/register">
+              Sign Up
             </CommonButton>
-            <CommonButton className="px-8 bg-secondary text-primary border border-primary hover:bg-primary hover:text-white">
-              Schedule a Call
+            <CommonButton className="px-8 bg-secondary text-primary border border-primary hover:bg-primary hover:text-white" href="/login">
+              Sign In
             </CommonButton>
           </div>
         </div>

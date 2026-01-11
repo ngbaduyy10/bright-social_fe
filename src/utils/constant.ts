@@ -21,20 +21,20 @@ export const homeFeatures = [
   {
     icon: Calendar,
     variant: "bg-green-100",
-    title: "Viewer Tracker",
-    desc: "Our viewer tracker feature helps you understand your audience and track their engagement with your content."
+    title: "Community Connect",
+    desc: "Build meaningful connections with people who share your interests and expand your social network effortlessly."
   },
   {
     icon: File,
     variant: "bg-purple-100",
-    title: "Audience Insights",
-    desc: "Personalize your content with deep insights into your audience's interests, demographics, and behavior."
+    title: "Creative Sharing",
+    desc: "Express your unique personality through high-quality posts, photos, and videos with powerful editing tools."
   },
   {
     icon: ChartPie,
     variant: "bg-orange-100",
-    title: "Engagement Metrics",
-    desc: "Measure your social media impact with detailed metrics on likes, comments, shares, and more."
+    title: "Privacy Control",
+    desc: "Take full control of your privacy with advanced security features to keep your information safe and secure."
   }
 ];
 

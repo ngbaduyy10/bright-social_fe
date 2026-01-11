@@ -75,7 +75,7 @@ export default function UserCard({ friend, user: userProp, type }: UserCardProps
             <CommonButton href={`/profile/${user.username}`} className="w-full">
               View Profile
             </CommonButton>
-            <CommonButton className="w-full bg-secondary text-black">
+            <CommonButton className="w-full bg-secondary text-black" href={`/messages/${user.id}`}>
               <MessageCircle size={16} className="mr-2" />
               Message
             </CommonButton>
